@@ -1,6 +1,5 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import axios from 'npm:axios@^1.2.1';
 import inquirer from 'npm:inquirer@^9.1.4';
 import methodOverride from 'npm:method-override@^3.0.0';
 import otpGenerator from 'npm:otp-generator@^4.0.0';
@@ -41,7 +40,6 @@ export type { Payload } from 'https:/deno.land/x/djwt@v2.3/mod.ts';
 export const vlmslug=slugify;
 export const vlmoverride=methodOverride;
 export const vlmopt=otpGenerator
-export const vlmaxios=axios;
 export const vlminquire=inquirer;
 
 export { dirname, join } from 'https:/deno.land/std@0.175.0/path/mod.ts';
