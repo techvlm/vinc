@@ -153,14 +153,14 @@ class vlmauth{
                 pass:vlmhash
             }
                 // auth for user
-                    const check = await vlmexistuser(userhope.user);
+                    const check = await vlmexistuser(userhope.user,ctx);
                     if (check) {
                         ctx.response.status = 422;
                         ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The username ${user} is already taken :(`,title:"Please try again !"});
                         return;
                       }
                 // auth for email
-                    const checks = await vlmexistemail(userhope.email)
+                    const checks = await vlmexistemail(userhope.email,ctx)
                     if (checks) {
                         ctx.response.status = 422;
                         ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The email ${email} is already taken :(`,title:"Please try again !"});
@@ -195,6 +195,7 @@ class vlmauth{
                 // const ascess= {
                 //     asc:await vlmtoken(vlmpayload(user)) 
                 // }
+                console.log()
                 
             }
         }

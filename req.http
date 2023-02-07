@@ -1,4 +1,0 @@
-DELETE  http://localhost:5050/Signup/list/63de7cf97066e0e9c87e4fe4
-Content-Type:application/application/json
-
-{"_id":"63de7cf97066e0e9c87e4fe4","user":"","email":"","password":"$2a$10$xGP.99SpI1uxR57gChSWT.BKNMTCP/XP7LRBz/8PK/0HdoyuHM3oG","created_at":"VlmDate :) => 4/1/2023   VlmTIME :) => 18:42"}

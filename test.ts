@@ -1,6 +1,8 @@
 // deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
+import { RouterContext } from './vlmapp/deps.ts';
+
 // router.get("/auth/instagram/callback", async (ctx) => {
 //   const code = ctx.request.url.searchParams.get("code");
 //   if (!code) {
@@ -258,5 +260,10 @@ import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 // const h1 = new XMLHttpRequest();
 // assert(h1);
 
-// console.log(h1.textContent);
+// console.log(h1.textContent);\\
+
+export function look(ctx:RouterContext){
+    return ctx;
+}
+
 
