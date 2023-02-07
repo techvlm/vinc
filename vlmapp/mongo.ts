@@ -6,14 +6,10 @@ import { vlmkey } from './validate.ts';
 
 export async function vlmconnect(ctx:RouterContext):Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-  if (ctx.request.url.protocol === "https:") {
-    // Handle HTTPS URL
-    await client.connect(
-      "mongodb+srv://deno_portfolio:vlmlucy3256#@vlmportfolio.8sadjb3.mongodb.net?authMechanism=SCRAM-SHA-1",
-      );
-  }
-  ctx.request.url.protocol === "http:"
-  await client.connect("mongodb://127.0.0.1:27017")
+  ctx.request.url.protocol === "https:"
+  await client.connect(
+    "mongodb+srv://deno_portfolio:vlmlucy3256#@vlmportfolio.8sadjb3.mongodb.net?authMechanism=SCRAM-SHA-1",
+    );
   return client.database("deno_portfolio").collection<vlmUserSchema>("vlmusers");
 // Connecting to a Local Database
 
