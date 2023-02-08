@@ -1,15 +1,15 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import { MongoClient } from 'https:/cdn.jsdelivr.net/gh/erfanium/mongo_next/src/index.ts';
-
-import { Bson, create, getNumericDate } from './deps.ts';
+import { Bson, Collection, config, create, getNumericDate, MongoClient } from './deps.ts';
 import { vlmkey } from './validate.ts';
 
 // deno-lint-ignore-file
-export async function vlmconnect(){
-  const client = new MongoClient("mongodb://localhost:27017/deno_portfolio");
+export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
+  const client = new MongoClient();
+  const {VLM_MONGO_ATLAS_PASS,VLM_USER}=config()
+  client.connect(`mongodb+srv://${VLM_USER}:${VLM_MONGO_ATLAS_PASS}@vlmportfolio.8sadjb3.mongodb.net/?retryWrites=true&w=majority`);
 
-  return client.db("deno_portfolio").collection("vlmusers");
+  return client.database("deno_portfolio").collection<vlmUserSchema>("vlmusers");
 }
 export function vlmtoken(payload:any):Promise<string>{
   // const { VLM_JWT_SECRET } = Deno.env.toObject();
