@@ -1,8 +1,11 @@
 // deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import { RouterContext } from './vlmapp/deps.ts';
+import { Application, Router } from 'https:/deno.land/x/oak/mod.ts';
 
+import { addTodo } from './routes.ts';
+
+// deno-lint-ignore-file
 // router.get("/auth/instagram/callback", async (ctx) => {
 //   const code = ctx.request.url.searchParams.get("code");
 //   if (!code) {
@@ -255,15 +258,90 @@ import { RouterContext } from './vlmapp/deps.ts';
 //   </html>`,
 //   "text/html",
 // );
-
 // assert(document);
 // const h1 = new XMLHttpRequest();
 // assert(h1);
-
 // console.log(h1.textContent);\\
+// const router = new Router();
+// await client.connect(
+//   "mongodb+srv://deno_portfolio:vlmlucy3256#@vlmportfolio.8sadjb3.mongodb.net?authMechanism=SCRAM-SHA-1",
+//   );
+//   client.database("deno_portfolio").collection("vlmusers");
+//     console.log("connected")
+// router.post("/", async (ctx:Context) => {
+//   if (!ctx.request.hasBody) {
+//     ctx.response.body = "No body was found"
+//   }
+//   ctx.response.body = ` <!DOCTYPE html>
+//   <html>
+//     <head><title>Hello oak!</title><head>
+//     <body>
+//       <h1>Hello oak!</h1>
+//     </body>
+//   </html>
+// `;
+// });
+// const app = new Application();
+// app.use(router.routes());
+// app.use(router.allowedMethods());
+// console.log('server is runnig')
+// await app.listen({ port: 8000 });
+// if(pass !=null){
+//   const vlmhash=hashSync(pass)
+//   const userhope:any={
+//       user,
+//       email,
+//       pass:vlmhash
+//   }
+//       // auth for user
+//           const check = await vlmexistuser(userhope.user);
+//           if (check) {
+//               ctx.response.status = 422;
+//               ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The username ${user} is already taken :(`,title:"Please try again !"});
+//               return;
+//             }
+//       // auth for email
+//           const checks = await vlmexistemail(userhope.email)
+//           if (checks) {
+//               ctx.response.status = 422;
+//               ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The email ${email} is already taken :(`,title:"Please try again !"});
+//               return;
+//             }
+//       // auth for all inputs
+//       const username =new vlmval();
+//       if(!username.validateUsername(userhope.user)){
+//           ctx.response.status = 422;
+//           ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your [${user} ] should be  above 4 characters and contain letters/numbers/underscores :(`,title:"Please try again !"});
+//           return;
+//       }
+//       if(!username.validateEmail(userhope.email)){
+//           ctx.response.status = 422;
+//           ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your ${email} is missing @gmail.com :(`,title:"Please try again !"});
+//           return;
+//       }
+//       if(!username.validatePassword(pass)){
+//           ctx.response.status = 422;
+//           ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your password is missing some properties :(`,title:"Please try again !"});
+//           return;
+//       }else{
+//           await vlmcreategist(userhope.user,userhope.email,userhope.pass)
+//           ctx.response.status =201;
+//           ctx.response.redirect("/Signin");
+//       }
+//       // post your contents to the database
+//   }
+// Defining schema interface
+// these functions does not exist yet, we will create them later 
+const app = new Application();
+const router = new Router(); 
+const port: number = 8000;
+router.post("/api/todos", addTodo); 
+// these functions does not exist yet, we will create them later 
 
-export function look(ctx:RouterContext){
-    return ctx;
-}
 
 
+// Here, we are telling our application to use the router
+app.use(router.routes());
+app.use(router.allowedMethods())
+app.listen({ port })
+console.log(`Server is running on port ${port}`);

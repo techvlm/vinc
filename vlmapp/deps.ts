@@ -1,4 +1,9 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
+
+export { Context } from 'https:/deno.land/x/oak@v11.1.0/context.ts';
+
+export { config } from 'https:/deno.land/x/dotenv@v3.2.0/mod.ts';
+
 export { Bot } from 'https:/deno.land/x/telegram@v0.1.1/mod.ts';
 export {
   blue,
