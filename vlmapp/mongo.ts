@@ -6,10 +6,27 @@ import { vlmkey } from './validate.ts';
 // deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-  const {VLM_MONGO_ATLAS_PASS,VLM_USER}=config()
-  client.connect(`mongodb+srv://${VLM_USER}:${VLM_MONGO_ATLAS_PASS}@vlmportfolio.8sadjb3.mongodb.net/?retryWrites=true&w=majority`);
-
-  return client.database("deno_portfolio").collection<vlmUserSchema>("vlmusers");
+  const {cluster,user,pass}=config()
+  // console.log(logs);
+  // await client.connect({
+  //   db: "vlmdbuser",
+  //   tls: true,
+  //   servers: [
+  //     {
+  //       host: host,
+  //       port: 27017,
+  //     },
+  //   ],
+  //   credential: {
+  //     username: user,
+  //     password: pass,
+  //     db: "vlmdbuser",
+  //     mechanism: "SCRAM-SHA-1",
+  //   },
+  // });
+  const like = `mongodb+srv://${user}:${pass}@${cluster}/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+  await client.connect(like);
+  return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");
 }
 export function vlmtoken(payload:any):Promise<string>{
   // const { VLM_JWT_SECRET } = Deno.env.toObject();

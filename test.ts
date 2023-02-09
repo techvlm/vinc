@@ -1,10 +1,8 @@
-// deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import { Application, Router } from 'https:/deno.land/x/oak/mod.ts';
+import { config, MongoClient } from './vlmapp/deps.ts';
 
-import { addTodo } from './routes.ts';
-
+// deno-lint-ignore-file
 // deno-lint-ignore-file
 // router.get("/auth/instagram/callback", async (ctx) => {
 //   const code = ctx.request.url.searchParams.get("code");
@@ -286,62 +284,67 @@ import { addTodo } from './routes.ts';
 // app.use(router.allowedMethods());
 // console.log('server is runnig')
 // await app.listen({ port: 8000 });
-// if(pass !=null){
-//   const vlmhash=hashSync(pass)
-//   const userhope:any={
-//       user,
-//       email,
-//       pass:vlmhash
-//   }
-//       // auth for user
-//           const check = await vlmexistuser(userhope.user);
-//           if (check) {
-//               ctx.response.status = 422;
-//               ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The username ${user} is already taken :(`,title:"Please try again !"});
-//               return;
-//             }
-//       // auth for email
-//           const checks = await vlmexistemail(userhope.email)
-//           if (checks) {
-//               ctx.response.status = 422;
-//               ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The email ${email} is already taken :(`,title:"Please try again !"});
-//               return;
-//             }
-//       // auth for all inputs
-//       const username =new vlmval();
-//       if(!username.validateUsername(userhope.user)){
-//           ctx.response.status = 422;
-//           ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your [${user} ] should be  above 4 characters and contain letters/numbers/underscores :(`,title:"Please try again !"});
-//           return;
-//       }
-//       if(!username.validateEmail(userhope.email)){
-//           ctx.response.status = 422;
-//           ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your ${email} is missing @gmail.com :(`,title:"Please try again !"});
-//           return;
-//       }
-//       if(!username.validatePassword(pass)){
-//           ctx.response.status = 422;
-//           ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your password is missing some properties :(`,title:"Please try again !"});
-//           return;
-//       }else{
-//           await vlmcreategist(userhope.user,userhope.email,userhope.pass)
-//           ctx.response.status =201;
-//           ctx.response.redirect("/Signin");
-//       }
-//       // post your contents to the database
-//   }
 // Defining schema interface
 // these functions does not exist yet, we will create them later 
-const app = new Application();
-const router = new Router(); 
-const port: number = 8000;
-router.post("/api/todos", addTodo); 
-// these functions does not exist yet, we will create them later 
 
 
 
-// Here, we are telling our application to use the router
-app.use(router.routes());
-app.use(router.allowedMethods())
-app.listen({ port })
-console.log(`Server is running on port ${port}`);
+
+
+// if(pass !=null){
+//     const vlmhash=hashSync(pass)
+//     const userhope:any={
+//         user,
+//         email,
+//         pass:vlmhash
+//     }
+//         // auth for user
+//             const check = await vlmexistuser(userhope.user);
+//             if (check) {
+//                 ctx.response.status = 422;
+//                 ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The username ${user} is already taken :(`,title:"Please try again !"});
+//                 return;
+//               }
+//         // auth for email
+//             const checks = await vlmexistemail(userhope.email)
+//             if (checks) {
+//                 ctx.response.status = 422;
+//                 ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The email ${email} is already taken :(`,title:"Please try again !"});
+//                 return;
+//               }
+//         // auth for all inputs
+//         const username =new vlmval();
+//         if(!username.validateUsername(userhope.user)){
+//             ctx.response.status = 422;
+//             ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your [${user} ] should be  above 4 characters and contain letters/numbers/underscores :(`,title:"Please try again !"});
+//             return;
+//         }
+//         if(!username.validateEmail(userhope.email)){
+//             ctx.response.status = 422;
+//             ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your ${email} is missing @gmail.com :(`,title:"Please try again !"});
+//             return;
+//         }
+//         if(!username.validatePassword(pass)){
+//             ctx.response.status = 422;
+//             ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your password is missing some properties :(`,title:"Please try again !"});
+//             return;
+//         }else{
+//             await vlmcreategist(userhope.user,userhope.email,userhope.pass)
+//             ctx.response.status =201;
+//             ctx.response.redirect("/Signin");
+//         }
+//         // post your contents to the database
+//     }
+
+
+
+// vlmcreategist(user,email,pass);
+// ctx.response.body=201;
+// ctx.response.redirect("/Signin")
+const {user,pass,cluster,host}=config()
+
+const client =new MongoClient();
+const like = `mongodb+srv://${user}:${pass}@${cluster}/testdb?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+
+await client.connect(like);
+console.log("connected...")
