@@ -1,7 +1,5 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import { config, MongoClient } from './vlmapp/deps.ts';
-
 // deno-lint-ignore-file
 // deno-lint-ignore-file
 // router.get("/auth/instagram/callback", async (ctx) => {
@@ -341,10 +339,13 @@ import { config, MongoClient } from './vlmapp/deps.ts';
 // vlmcreategist(user,email,pass);
 // ctx.response.body=201;
 // ctx.response.redirect("/Signin")
-const {user,pass,cluster,host}=config()
+// const {user,pass,cluster,host}=config()
 
-const client =new MongoClient();
-const like = `mongodb+srv://${user}:${pass}@${cluster}/testdb?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+// const client =new MongoClient();
+// // const like = `mongodb+srv://${user}:${pass}@${cluster}/testdb?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+// const likes = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/testdb?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 
-await client.connect(like);
-console.log("connected...")
+// await client.connect(likes);
+// console.log("connected...")
+
+// client.database("testdb")

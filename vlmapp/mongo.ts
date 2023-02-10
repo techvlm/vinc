@@ -1,31 +1,15 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import { Bson, Collection, config, create, getNumericDate, MongoClient } from './deps.ts';
+import { Bson, Collection, create, getNumericDate, MongoClient } from './deps.ts';
 import { vlmkey } from './validate.ts';
 
 // deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-  const {cluster,user,pass}=config()
-  // console.log(logs);
-  // await client.connect({
-  //   db: "vlmdbuser",
-  //   tls: true,
-  //   servers: [
-  //     {
-  //       host: host,
-  //       port: 27017,
-  //     },
-  //   ],
-  //   credential: {
-  //     username: user,
-  //     password: pass,
-  //     db: "vlmdbuser",
-  //     mechanism: "SCRAM-SHA-1",
-  //   },
-  // });
-  const like = `mongodb+srv://${user}:${pass}@${cluster}/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
-  await client.connect(like);
+  const { user,pass,cluster } = Deno.env.toObject();
+const likes = `mongodb+srv://${user}:${pass}@${cluster}/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+await client.connect(likes)
+  // const like = `mongodb+srv://${user}:${pass}@${cluster}/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
   return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");
 }
 export function vlmtoken(payload:any):Promise<string>{
