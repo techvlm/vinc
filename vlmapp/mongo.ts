@@ -6,10 +6,10 @@ import { vlmkey } from './validate.ts';
 // deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-  const { vlmstring } = Deno.env.toObject();
-const likes = vlmstring;
-await client.connect(likes)
-  // const like = `mongodb+srv://${user}:${pass}@${cluster}/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+  const { vlmstring,user,pass,cluster } = Deno.env.toObject();
+// const likes = vlmstring;
+const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+await client.connect(like)
   return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");
 }
 export function vlmtoken(payload:any):Promise<string>{
