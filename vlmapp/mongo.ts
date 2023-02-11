@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
 import { Bson, Collection, create, getNumericDate, MongoClient } from './deps.ts';
@@ -6,8 +7,6 @@ import { vlmkey } from './validate.ts';
 // deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-  const { vlmstring,user,pass,cluster } = Deno.env.toObject();
-// const likes = vlmstring;
 const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 await client.connect(like)
   return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");

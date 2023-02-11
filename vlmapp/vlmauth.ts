@@ -1,5 +1,7 @@
-import { bold, getQuery, red, renderFileToString, RouterContext } from './deps.ts';
+import { bold, getQuery, hashSync, red, renderFileToString, RouterContext } from './deps.ts';
+import { vlmexistemail, vlmexistuser } from './mongo.ts';
 import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } from './User.ts';
+import { vlmval } from './validate.ts';
 
 // deno-lint-ignore-file
 // deno-lint-ignore-file
@@ -142,11 +144,52 @@ class vlmauth{
             ctx.response.status = 422;
             ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`All inputs are empty :(`,title:"Please try again !"});
             return;
-          }else{
-            vlmcreategist(user,email,pass);
-            ctx.response.body=201;
-            ctx.response.redirect("/Signin")
           }
+          
+if(pass !=null){
+    const vlmhash=hashSync(pass)
+    const userhope:any={
+        user,
+        email,
+        pass:vlmhash
+    }
+        // auth for user
+            const check = await vlmexistuser(userhope.user);
+            if (check) {
+                ctx.response.status = 422;
+                ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The username ${user} is already taken :(`,title:"Please try again !"});
+                return;
+              }
+        // auth for email
+            const checks = await vlmexistemail(userhope.email)
+            if (checks) {
+                ctx.response.status = 422;
+                ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`The email ${email} is already taken :(`,title:"Please try again !"});
+                return;
+              }
+        // auth for all inputs
+        const username =new vlmval();
+        if(!username.validateUsername(userhope.user)){
+            ctx.response.status = 422;
+            ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your [${user} ] should be  above 4 characters and contain letters/numbers/underscores :(`,title:"Please try again !"});
+            return;
+        }
+        if(!username.validateEmail(userhope.email)){
+            ctx.response.status = 422;
+            ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your ${email} is missing @gmail.com :(`,title:"Please try again !"});
+            return;
+        }
+        if(!username.validatePassword(pass)){
+            ctx.response.status = 422;
+            ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your password is missing some properties :(`,title:"Please try again !"});
+            return;
+        }else{
+            await vlmcreategist(userhope.user,userhope.email,userhope.pass)
+            ctx.response.status =201;
+            ctx.response.redirect("/Signin");
+        }
+        // post your contents to the database
+    }
         }
 
     async vlmprotected(ctx:RouterContext){
