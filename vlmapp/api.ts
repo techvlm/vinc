@@ -203,7 +203,7 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            const env= Deno.env.toObject();
+            const env= config();
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
