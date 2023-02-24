@@ -1,33 +1,27 @@
 // deno-lint-ignore-file
 import {
-  bold,
-  brightBlue,
-  compareSync,
-  getQuery,
-  gray,
-  hashSync,
-  red,
-  renderFileToString,
-  RouterContext,
-  send,
-  SmtpClient,
+    bold,
+    brightBlue,
+    compareSync,
+    getQuery,
+    gray,
+    hashSync,
+    red,
+    renderFileToString,
+    RouterContext,
+    send,
+    SmtpClient,
 } from './deps.ts';
 import {
-  vlmexistemail,
-  vlmexistuser,
-  vlmpayload,
-  vlmpayload_admin,
-  vlmpayload_email,
-  vlmtoken,
-  vlmuserid,
+    vlmexistemail,
+    vlmexistuser,
+    vlmpayload,
+    vlmpayload_admin,
+    vlmpayload_email,
+    vlmtoken,
+    vlmuserid,
 } from './mongo.ts';
-import {
-  vlmcreategist,
-  vlmgetgist,
-  vlmgetgistid,
-  vlmpatchGist,
-  vlmremoveGist,
-} from './User.ts';
+import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } from './User.ts';
 import { vlmval } from './validate.ts';
 
 // deno-lint-ignore-file
@@ -211,7 +205,7 @@ if(pass !=null){
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
-                const url = `http://127.0.0.1:5050/valid?vlm=${top}`
+                const url = `https://vince.deno.dev/valid?vlm=${top}`
             
                 await client.connectTLS({
                     hostname: "smtp.gmail.com",
