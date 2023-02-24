@@ -1,5 +1,6 @@
 {
-    "compilerOptions": {},
-    "fmt": {},
-    "lint": {}
+  "tasks": {
+    "dev": "deno run --watch main.ts",
+    "vlmapp":"denon run  --allow-net --allow-read vlm.ts"
   }
+}

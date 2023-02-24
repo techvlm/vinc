@@ -7,9 +7,11 @@ import { vlmkey } from './validate.ts';
 // deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
-await client.connect(like)
-  return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");
+ const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+// await client.connect("mongodb://localhost:27017/deno_portfolio")
+client.connect(like)
+await client.connect("mongodb://127.0.0.1:27017/deno_portfolio");
+  return client.database("deno_portfolio").collection<vlmUserSchema>("vlmusers");
 }
 export function vlmtoken(payload:any):Promise<string>{
   // const { VLM_JWT_SECRET } = Deno.env.toObject();
@@ -17,11 +19,28 @@ export function vlmtoken(payload:any):Promise<string>{
   return create({alg:"HS512",typ:"JWT"},payload,vlmkey);
 }
 
-export function vlmpayload(username:string){
+export function vlmpayload_email(emailstr:string){
   return {
-    username,
+    emailstr,
+    role:"client",
+    exp:getNumericDate(60*60 * 1000)
+
+  }
+}
+export function vlmpayload_admin(emailstr:string){
+  return {
+    emailstr,
     role:"admin",
-    exp:getNumericDate(60*60)
+    exp:getNumericDate(60*60 * 1000)
+
+  }
+}
+
+export function vlmpayload(iss:string){
+  return {
+    iss,
+    role:"clientauth",
+    exp:getNumericDate(60*60 * 1000)
 
   }
 }
@@ -30,6 +49,17 @@ export const vlmexistemail = async (email:string) => {
   const res = await result.findOne( {email} );
   return !!res;
 };
+export const vlmexistname = async (email:string) => {
+  const result = await vlmconnect()
+  const res = await result.findOne( {admin:email} );
+  return !!res;
+};
+export async function vlmuserid(user:string){
+  const result = await vlmconnect();
+  const res = await result.findOne({ user: user });
+  return res;
+}
+
 export const vlmexistuser = async (user:string) => {
   const result = await vlmconnect()
   const res = await result.findOne( {user} );
@@ -64,11 +94,11 @@ export async function vlmdeleteGist(id: string): Promise<any> {
   return await collection.deleteOne({ _id: new Bson.ObjectId(id) });
 }
 
-export async function vlmupdateGist(gist: any): Promise<any> {
+export async function vlmupdateGist(gist:string,vlm_verify:string): Promise<any> {
   const collection = await vlmconnect();
-  const filter = { _id: new Bson.ObjectId(gist.id) };
-  const update = { $set: { content: gist.content } };
-  return await collection.updateOne(filter, update);
+  const filter = { _id: new Bson.ObjectId(gist) };
+  const update:any = { $set:  vlm_verify} ;
+  return (await collection.updateOne(filter, update));
 }
 
 
@@ -78,5 +108,7 @@ interface vlmUserSchema {
   user:string;
   email:string;
   password:string;
+  vlm_verify:string;
   created_at:string;
+
 }

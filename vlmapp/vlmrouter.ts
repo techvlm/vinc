@@ -1,24 +1,52 @@
+import {
+    vlmcheck,
+    vlmcss,
+    vlmcssboot,
+    vlmdelete,
+    vlmhome,
+    vlmimg,
+    vlmjs,
+    vlmjsboot,
+    vlmlist,
+    vlmlistid,
+    vlmlogin,
+    vlmpatch,
+    vlmpostsignin,
+    vlmpostsignup,
+    vlmregister,
+    vlmtake,
+    vlmtake1,
+} from './api.ts';
 import { Router } from './deps.ts';
-import { vlmauths } from './vlmauth.ts';
+import { vlmauthmiddleware, vlmvalidate } from './validate.ts';
+import { vlmauth } from './vlmuser.ts';
 
-// import vlmauths from './vlmauth.ts';
+// deno-lint-ignore-file
+// deno-lint-ignore-file require-await
+const vlmrouter =new Router();
 
-const vlmrouter = new Router();
 
 vlmrouter
-.get('/',vlmauths.vlmhome)
-.get('/list', vlmauths.vlmlist)
-.get('/list/:id', vlmauths.vlmlistid)
-.patch('/list/:id',vlmauths.vlmpatch)
-.delete('/list/:id',vlmauths.vlmdelete)
-.post('/Signin',vlmauths.vlmpostlog)
-.get('/Signin',vlmauths.vlmlogin)
-.get('/Signup', vlmauths.vlmregister)
-.post('/Signup',vlmauths.vlmpostreg)
-.get("/logout", vlmauths.vlmlogout)
-.get("/protected", vlmauths.vlmprotected)
-.get("/js/:file", vlmauths.vlmjs)
-.get('/css/:file',vlmauths.vlmcss)
-.get('/img/:file',vlmauths.vlmimg)
+.get("/",vlmhome)
+.get('/valid',vlmvalidate ,vlmcheck)
+.patch('/valid',vlmvalidate)
+.get("/logout",vlmtake)
 
-export { vlmrouter };
+.get("/dashboard",vlmauthmiddleware,vlmtake1)
+.use("/dashboard",vlmauth)
+.get("/signup",vlmregister)
+.get("/signin",vlmlogin)
+.get('/list', vlmlist)
+.get('/list/:id', vlmlistid)
+.patch('/list/:id', vlmpatch)
+.delete('/list/:id', vlmdelete)
+.post('/signup',vlmpostsignup)
+.post('/signin',vlmpostsignin)
+.get("/js/:file",vlmjs)
+
+.get('/css/:file',vlmcss)
+.get("/js/boot/:file", vlmjsboot)
+.get('/css/boot/:file',vlmcssboot)
+.get('/img/:file',vlmimg)
+
+export default vlmrouter;

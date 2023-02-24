@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./css/call.css">
+</head>
+<body>
+    <div class="container">
+            <input type="submit" id="btn" class="btn" value="verify email"  onclick="openPopup()">
+            <div class="popup" id="popup">
+                <img src="./img/404-tick.png" alt="">
+                <h2>Thank You</h2>
+                <p>Your email is succesfully verified</p>
+                <a href="/Signin">
+                    <button type="button" class="button">
+                       OK
+                    </button>
+                </a>
+                </div>
+                
+            </div>
+            
+
+    <script>
+        let  pop = document.getElementById("popup");
+        let  popd = document.getElementById("btn");
+        function openPopup(){
+            pop.classList.add("open-popup")
+        }
+        popd.click()
+    </script>
+</body>
+</html>

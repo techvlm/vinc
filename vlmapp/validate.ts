@@ -1,5 +1,8 @@
-import { RouterContext } from './deps.ts';
+// deno-lint-ignore-file
+import { Context, red, verify } from './deps.ts';
+import { vlmpatchGist } from './User.ts';
 
+// deno-lint-ignore-file
 // deno-lint-ignore-file
 export class vlmUsercheck {
     private isAdmin: boolean;
@@ -10,23 +13,7 @@ export class vlmUsercheck {
       return this.isAdmin;
     }
   }
-class vlmAdminset {
-    async checkAdmin(ctx: RouterContext, ) {
-      if (!ctx.request.headers.get("vlmAdmin")) {
-        ctx.response.status = 401;
-        ctx.response.body = "Not authorized";
-        return;
-      }
-      const adminRole = "vlmAdmin";
-      const authorization = ctx.request.headers.get("vlmAdmin")!;
-      const role = authorization.split(" ")[1];
-      if (role !== adminRole) {
-        ctx.response.status = 401;
-        ctx.response.body = "Not authorized";
-        return;
-      }
-    }
-  }
+
   export const vlmkey= await crypto.subtle.generateKey(
     { name: "HMAC", hash: "SHA-512" },
     true,
@@ -42,22 +29,59 @@ class vlmAdminset {
 
 export class vlmval {
   validateEmail(email:string) {
-    // Regular expression for email validation
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(String(email).toLowerCase());
   }
 
   validateUsername(username:string) {
-    // Instagram usernames must be at least 4 characters long and can only contain letters, numbers, and underscores
-    const usernameRegex = /^[a-zA-Z0-9_]{4,}$/;
+    const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
     return usernameRegex.test(username);
   }
 
   validatePassword(password:string) {
-    // Example password validation: at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    // return passwordRegex.test(password);
     const news=/^.{8,}$/;
     return news.test(password)
   }
 }
+
+export const vlmauthmiddleware=async(ctx:Context,next:Function)=>{
+ if (!ctx.state.foo) {
+   ctx.response.redirect('/Signin');
+ }else{
+  await next();
+ }
+}
+export const vlmvalidate = async (ctx: Context, next:Function) => {
+  try {
+    const requestUrl =ctx.request.url;
+    const queryString = requestUrl.search;
+    const searchParams = new URLSearchParams(queryString);
+    const myParamValue = searchParams.get('vlm');
+    if (!myParamValue) {
+        throw new Error("there is no param id")
+    }
+    if(myParamValue){
+      await verify(myParamValue,vlmkey);
+    }
+    const check:any =await ctx.cookies.get("vlmid")
+    const gop:any={vlm_verify:"true"}
+    const rop= await vlmpatchGist(check,gop);
+    console.log(rop)
+    await next();
+} catch (error) {
+    console.log(red("VLM :) " + error))
+    ctx.response.redirect("/Signin")
+}
+};
+export const jsonMiddleware = async (ctx: Context, next: Function) => {
+  if (ctx.request.url.pathname === '/products.json') {
+    const jsonFile = await Deno.readFile(`${Deno.cwd()}/vlmapp/static/json/products.json`);
+    const jsonData = new TextDecoder().decode(jsonFile);
+    ctx.response.body = jsonData;
+    ctx.response.headers.set('Content-Type', 'application/json');
+  }else
+  {
+    await next();
+  }
+};
+
