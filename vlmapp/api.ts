@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { config } from 'https:/deno.land/x/dotenv@v3.2.0/mod.ts';
+import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
 import {
     bold,
@@ -203,7 +203,7 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            const { SEND_EMAIL, PWD} = config();
+            // const { SEND_EMAIL, PWD} = config();
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
@@ -212,11 +212,11 @@ if(pass !=null){
                 await client.connectTLS({
                     hostname: "smtp.gmail.com",
                     port: 465,
-                    username: SEND_EMAIL,
-                    password: PWD,
+                    username:Deno.env.get("SEND_EMAIL"),
+                    password:Deno.env.get("PWD"),
                   });
                   await client.send({
-                    from: SEND_EMAIL,
+                    from: Deno.env.get("SEND_EMAIL")||'',
                     to: userhope.email,
                     subject: `Welcome ${userhope.user} Please confirm your email address`,
                     content: `
