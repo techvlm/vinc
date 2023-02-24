@@ -1,9 +1,9 @@
-// deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
 import { Bson, Collection, create, getNumericDate, MongoClient } from './deps.ts';
 import { vlmkey } from './validate.ts';
 
+// deno-lint-ignore-file
 // deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
