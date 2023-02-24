@@ -203,7 +203,7 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            const env= config();
+            const {SEND_EMAIL,PWD}= config({ safe: true });
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
@@ -212,11 +212,11 @@ if(pass !=null){
                 await client.connectTLS({
                     hostname: "smtp.gmail.com",
                     port: 465,
-                    username: env.SEND_EMAIL,
-                    password: env.PWD,
+                    username: SEND_EMAIL,
+                    password: PWD,
                   });
                   await client.send({
-                    from: env.SEND_EMAIL,
+                    from: SEND_EMAIL,
                     to: userhope.email,
                     subject: `Welcome ${userhope.user} Please confirm your email address`,
                     content: `
@@ -281,8 +281,8 @@ if(pass !=null){
                 access_token0:await vlmtoken(vlmpayload_admin(yop.user)),
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
-            const env=config()
-            if(yet.vlmmail == env.SEND_EMAIL){
+            const {SEND_EMAIL}=config({ safe: true })
+            if(yet.vlmmail == SEND_EMAIL){
                 // for admin
                 console.log(res.access_token0,"for admin")
                 
