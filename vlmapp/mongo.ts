@@ -1,17 +1,17 @@
+// deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
 import { Bson, Collection, create, getNumericDate, MongoClient } from './deps.ts';
 import { vlmkey } from './validate.ts';
 
 // deno-lint-ignore-file
-// deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
- const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 // await client.connect("mongodb://localhost:27017/deno_portfolio")
-client.connect(like)
-await client.connect("mongodb://127.0.0.1:27017/deno_portfolio");
-  return client.database("deno_portfolio").collection<vlmUserSchema>("vlmusers");
+// await client.connect("mongodb://127.0.0.1:27017/deno_portfolio");
+await client.connect(like);
+  return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");
 }
 export function vlmtoken(payload:any):Promise<string>{
   // const { VLM_JWT_SECRET } = Deno.env.toObject();

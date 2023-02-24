@@ -1,29 +1,33 @@
 // deno-lint-ignore-file
-import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
-
 import {
-    bold,
-    brightBlue,
-    compareSync,
-    getQuery,
-    gray,
-    hashSync,
-    red,
-    renderFileToString,
-    RouterContext,
-    send,
-    SmtpClient,
+  bold,
+  brightBlue,
+  compareSync,
+  getQuery,
+  gray,
+  hashSync,
+  red,
+  renderFileToString,
+  RouterContext,
+  send,
+  SmtpClient,
 } from './deps.ts';
 import {
-    vlmexistemail,
-    vlmexistuser,
-    vlmpayload,
-    vlmpayload_admin,
-    vlmpayload_email,
-    vlmtoken,
-    vlmuserid,
+  vlmexistemail,
+  vlmexistuser,
+  vlmpayload,
+  vlmpayload_admin,
+  vlmpayload_email,
+  vlmtoken,
+  vlmuserid,
 } from './mongo.ts';
-import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } from './User.ts';
+import {
+  vlmcreategist,
+  vlmgetgist,
+  vlmgetgistid,
+  vlmpatchGist,
+  vlmremoveGist,
+} from './User.ts';
 import { vlmval } from './validate.ts';
 
 // deno-lint-ignore-file
@@ -203,7 +207,7 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            // const { SEND_EMAIL, PWD} = config();
+            const { SEND_EMAIL, PWD} = Deno.env.toObject();
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
@@ -212,11 +216,11 @@ if(pass !=null){
                 await client.connectTLS({
                     hostname: "smtp.gmail.com",
                     port: 465,
-                    username:"vincentmwendwa003@gmail.com",
-                    password:"kopvfirdbdqvsslb",
+                    username: SEND_EMAIL,
+                    password: PWD,
                   });
                   await client.send({
-                    from: "vincentmendwa@gmail.com",
+                    from: SEND_EMAIL,
                     to: userhope.email,
                     subject: `Welcome ${userhope.user} Please confirm your email address`,
                     content: `
@@ -281,7 +285,7 @@ if(pass !=null){
                 access_token0:await vlmtoken(vlmpayload_admin(yop.user)),
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
-            if(yet.vlmmail == "vincentmwendwa003@gmail.com"){
+            if(yet.vlmmail == Deno.env.get("SEND_EMAIL")){
                 // for admin
                 console.log(res.access_token0,"for admin")
                 
