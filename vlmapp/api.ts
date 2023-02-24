@@ -203,7 +203,7 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            const { SEND_EMAIL, PWD} =await config();
+            const { SEND_EMAIL, PWD} =config();
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
