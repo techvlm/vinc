@@ -1,12 +1,5 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
-import {
-  create as jwtCreate,
-  decode as jwtDecode,
-  getNumericDate,
-  verify as jwtVerify,
-} from 'https:/deno.land/x/djwt@v2.0/mod.ts';
-
 // import { v1, v4 } from 'https:/deno.land/std@0.177.0/uuid/mod.ts';
 // import { SmtpClient } from './vlmapp/deps.ts';
 // await client.connectTLS({
@@ -391,16 +384,9 @@ import {
 // // mongodb://localhost:27017/vlmdbuser
 // console.log("connected to local mongo...")
 // await client.database("vlmdbuser").collection("vlmusers");
-export { getNumericDate, jwtCreate, jwtDecode, jwtVerify };
+const dbHost = Deno.env.get("PWD");
+const dbPort = Deno.env.get("SEND_EMAIL");
+const dbName = Deno.env.get("RECV_EMAIL");
+const dbPassword = Deno.env.get("VLM");
 
-const payload = {
-    iss: 'https://vince.deno.dev/Signup',
-    sub: '41e9546b-72ae-42d6-874d-040664b0e01d',
-    aud: 'https://vince.deno.dev/',
-    exp: getNumericDate(30 * 60),
-    iat: getNumericDate(new Date()),
-    nbf: getNumericDate(new Date()),
-    name: 'vlm',
-    jit: '813733181947831983434',
-  }
-  const jwt = await jwtCreate({ alg: 'HS512', typ: 'JWT' }, payload, 'your-secret');
+console.log(`Database connection info: ${dbPassword}@${dbHost}:${dbPort}/${dbName}`);
