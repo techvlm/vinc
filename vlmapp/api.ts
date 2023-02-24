@@ -212,11 +212,11 @@ if(pass !=null){
                 await client.connectTLS({
                     hostname: "smtp.gmail.com",
                     port: 465,
-                    username:Deno.env.get("SEND_EMAIL"),
-                    password:Deno.env.get("PWD"),
+                    username:"vincentmwendwa003@gmail.com",
+                    password:"kopvfirdbdqvsslb",
                   });
                   await client.send({
-                    from: Deno.env.get("SEND_EMAIL")||'',
+                    from: "vincentmendwa@gmail.com",
                     to: userhope.email,
                     subject: `Welcome ${userhope.user} Please confirm your email address`,
                     content: `
@@ -281,7 +281,7 @@ if(pass !=null){
                 access_token0:await vlmtoken(vlmpayload_admin(yop.user)),
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
-            if(yet.vlmmail == Deno.env.get("SEND_EMAIL")){
+            if(yet.vlmmail == "vincentmwendwa003@gmail.com"){
                 // for admin
                 console.log(res.access_token0,"for admin")
                 
