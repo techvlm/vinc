@@ -84,7 +84,7 @@ const validateAuthCookie = async (ctx:Context,authCookie: string): Promise<boole
     
         await client.connectTLS({
             hostname: "smtp.gmail.com",
-            port: 465,
+            port: 587,
             username: env.SEND_EMAIL,
             password: env.PWD,
           });
