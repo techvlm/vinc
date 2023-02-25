@@ -1,6 +1,5 @@
-import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
-
-import { config, parse } from 'https:/deno.land/x/dotenv@v3.2.0/mod.ts';
+// deno-lint-ignore-file
+import { config } from 'https:/deno.land/x/dotenv@v3.2.0/mod.ts';
 
 import {
     bold,
@@ -27,7 +26,6 @@ import {
 import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } from './User.ts';
 import { vlmval } from './validate.ts';
 
-// deno-lint-ignore-file
 // deno-lint-ignore-file
 class vlmtimer{
     async logger(ctx:any,next:Function){
@@ -206,11 +204,6 @@ if(pass !=null){
             
             const client = new SmtpClient(); 
             const env= config({ safe: true });
-            const envConfig = parse(`
-            SEND_EMAIL=${env.SEND_EMAIL}
-            PWD=${env.PWD}`);
-            
-
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
@@ -219,11 +212,11 @@ if(pass !=null){
                 await client.connectTLS({
                     hostname: "smtp.gmail.com",
                     port: 465,
-                    username: envConfig.env.SEND_EMAIL,
-                    password: envConfig.env.PWD,
+                    username: env.SEND_EMAIL,
+                    password: env.PWD,
                   });
                   await client.send({
-                    from: envConfig.env.SEND_EMAIL,
+                    from: env.SEND_EMAIL,
                     to: userhope.email,
                     subject: `Welcome ${userhope.user} Please confirm your email address`,
                     content: `
@@ -288,10 +281,8 @@ if(pass !=null){
                 access_token0:await vlmtoken(vlmpayload_admin(yop.user)),
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
-            const env= config({ safe: true });
-            const envConfig = parse(`
-            SEND_EMAIL=${env.SEND_EMAIL}`);
-            if(yet.vlmmail == envConfig.env.SEND_EMAIL){
+            const env=config({ safe: true })
+            if(yet.vlmmail == env.SEND_EMAIL){
                 // for admin
                 console.log(res.access_token0,"for admin")
                 
