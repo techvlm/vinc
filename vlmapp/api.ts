@@ -223,12 +223,13 @@ if(pass !=null){
 
                     `
                   });
+                  await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
+                  const userd:any= await vlmuserid(userhope.user)
+                  ctx.cookies.set("vlmid",userd?._id)
+                  ctx.response.redirect("/Signin");
 
             }
-            await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
-            const userd:any= await vlmuserid(userhope.user)
-            ctx.cookies.set("vlmid",userd?._id)
-            ctx.response.redirect("/Signin");
+
                
         }
         // post your contents to the database
