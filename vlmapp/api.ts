@@ -1,6 +1,3 @@
-// deno-lint-ignore-file
-import { config } from 'https:/deno.land/x/dotenv@v3.2.0/mod.ts';
-
 import {
     bold,
     brightBlue,
@@ -203,7 +200,7 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            const env= config({ safe: true });
+            const env =Deno.env.toObject();
             const top =await vlmtoken(vlmpayload_email(email))
             if (top !=null) {
                 ctx.response.status =201;
@@ -281,7 +278,7 @@ if(pass !=null){
                 access_token0:await vlmtoken(vlmpayload_admin(yop.user)),
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
-            const env=config({ safe: true })
+            const env =Deno.env.toObject();
             if(yet.vlmmail == env.SEND_EMAIL){
                 // for admin
                 console.log(res.access_token0,"for admin")
