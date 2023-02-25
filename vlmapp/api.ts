@@ -9,19 +9,11 @@ import {
     renderFileToString,
     RouterContext,
     send,
-    SmtpClient,
 } from './deps.ts';
-import {
-    vlmexistemail,
-    vlmexistuser,
-    vlmpayload,
-    vlmpayload_admin,
-    vlmpayload_email,
-    vlmtoken,
-    vlmuserid,
-} from './mongo.ts';
+import { vlmexistemail, vlmexistuser, vlmpayload, vlmpayload_admin, vlmtoken, vlmuserid } from './mongo.ts';
 import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } from './User.ts';
 import { vlmval } from './validate.ts';
+import { vlmsend } from './vlmuser.ts';
 
 // deno-lint-ignore-file
 class vlmtimer{
@@ -198,39 +190,11 @@ if(pass !=null){
             ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`,{error:`your password is missing some properties :(`,title:"Please try again !"});
             return;
         }else{
-            
-            const client = new SmtpClient(); 
-            const env =Deno.env.toObject();
-            const top =await vlmtoken(vlmpayload_email(email))
-            if (top !=null) {
-                ctx.response.status =201;
-                const url = `https://vince.deno.dev/valid?vlm=${top}`
-            
-                await client.connectTLS({
-                    hostname: "smtp.gmail.com",
-                    port: 465,
-                    username: env.SEND_EMAIL,
-                    password: env.PWD,
-                  });
-                  await client.send({
-                    from: env.SEND_EMAIL,
-                    to: userhope.email,
-                    subject: `Welcome ${userhope.user} Please confirm your email address`,
-                    content: `
-                    Hi from vincent, your link will expire after 1 minute
-                    <br/>
-                    <span>here is your link ... </span><a href=${url}>${url}</a>
-
-                    `
-                  });
-                  await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
-                  const userd:any= await vlmuserid(userhope.user)
-                  ctx.cookies.set("vlmid",userd?._id)
-                  ctx.response.redirect("/Signin");
-
-            }
-
-               
+            await vlmsend(ctx,email,user);
+            await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
+            const userd:any= await vlmuserid(userhope.user)
+            ctx.cookies.set("vlmid",userd?._id)
+            ctx.response.redirect("/Signin");      
         }
         // post your contents to the database
     }

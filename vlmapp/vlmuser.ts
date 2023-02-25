@@ -1,4 +1,5 @@
-import { Context, Cookies, red, verify } from './deps.ts';
+import { Context, Cookies, red, RouterContext, SmtpClient, verify } from './deps.ts';
+import { vlmpayload_email, vlmtoken } from './mongo.ts';
 import { vlmkey } from './validate.ts';
 
 // deno-lint-ignore-file
@@ -73,3 +74,32 @@ const validateAuthCookie = async (ctx:Context,authCookie: string): Promise<boole
     return true;
   };
   
+  export async function vlmsend(ctx:RouterContext<string>,email:string,user:string){
+    const client = new SmtpClient(); 
+    const env =Deno.env.toObject();
+    const top =await vlmtoken(vlmpayload_email(email))
+    if (top !=null) {
+        ctx.response.status =201;
+        const url = `https://vince.deno.dev/valid?vlm=${top}`
+    
+        await client.connectTLS({
+            hostname: "smtp.gmail.com",
+            port: 465,
+            username: env.SEND_EMAIL,
+            password: env.PWD,
+          });
+          await client.send({
+            from: env.SEND_EMAIL,
+            to: email,
+            subject: `Welcome ${user} Please confirm your email address`,
+            content: `
+            Hi from vincent, your link will expire after 1 minute
+            <br/>
+            <span>here is your link ... </span><a href=${url}>${url}</a>
+
+            `
+          });
+
+
+    }
+  }
