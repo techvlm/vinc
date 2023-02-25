@@ -1,5 +1,7 @@
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
+import { config, parse } from 'https:/deno.land/x/dotenv@v3.2.0/mod.ts';
+
 // import { v1, v4 } from 'https:/deno.land/std@0.177.0/uuid/mod.ts';
 // import { SmtpClient } from './vlmapp/deps.ts';
 // await client.connectTLS({
@@ -384,9 +386,20 @@ import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 // // mongodb://localhost:27017/vlmdbuser
 // console.log("connected to local mongo...")
 // await client.database("vlmdbuser").collection("vlmusers");
-const dbHost = Deno.env.get("PWD");
-const dbPort = Deno.env.get("SEND_EMAIL");
-const dbName = Deno.env.get("RECV_EMAIL");
-const dbPassword = Deno.env.get("VLM");
+// const dbHost = Deno.env.get("PWD");
+// const dbPort = Deno.env.get("SEND_EMAIL");
+// const dbName = Deno.env.get("RECV_EMAIL");
+// const dbPassword = Deno.env.get("VLM");
+// console.log(`Database connection info: ${dbPassword}@${dbHost}:${dbPort}/${dbName}`);
 
-console.log(`Database connection info: ${dbPassword}@${dbHost}:${dbPort}/${dbName}`);
+const env=config();
+const envConfig = parse(`
+ DB_HOST=${env.DB_HOST}
+ DB_PORT=${env.DB_PORT}
+`);
+
+console.log(envConfig.env.DB_HOST); // "localhost"
+console.log(envConfig.env.DB_PORT); // "5432"
+// console.log(envConfig); // "mydb"
+// console.log(envConfig); // "myuser"
+// console.log(envConfig); // "mypassword"
