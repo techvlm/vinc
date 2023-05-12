@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Upload and Preview an Image</title>
+  </head>
+  <body>
+    <form method="post" enctype="multipart/form-data">
+      <label for="image">Choose an Image:</label>
+      <input type="file" name="image" id="image">
+      <button type="submit">Upload</button>
+    </form>
+
+    <% if (previewUrl) { %>
+      <img src="<%= previewUrl %>" alt="Image Preview">
+    <% } %>
+
+    <% if (dataUrl) { %>
+      <p>Data URL:</p>
+      <code><%= dataUrl %></code>
+    <% } %>
+
+    <script>
+      const input = document.getElementById("image");
+      input.addEventListener("change", () => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const preview = document.querySelector("img");
+          preview.src = reader.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      });
+    </script>
+  </body>
+</html>
+
+
+
+<input type="file" class="resizer__file">
+                    <div class="dimensions">
+                        <input type="text" class="resizer__input--width" value="0">
+                        x
+                        <input type="text" class="resizer__input--height" value="0">
+                    </div>
+                    <br>
+                    <input type="checkbox" class="resizer__aspect"> 
+                    <br>
+                    <canvas  class="drop-zone">
+
+                    </canvas>
+
+
+                    <script>
+                       // add an image resizer
+                  const fileinput= document.querySelector(".resizer__file")
+                  const filewidh= document.querySelector(".resizer__input--width")
+                  const fileheight= document.querySelector(".resizer__input--height")
+                  const fileaspect= document.querySelector(".resizer__aspect")
+
+                  const filecanvas= document.querySelector(".drop-zone")
+                  const canvasctx=filecanvas.getContext("2d");
+
+                  let activeev,originalel;
+
+                  fileinput.addEventListener("change",(ev)=>{
+                    const read=new FileReader();
+                    read.addEventListener("load",()=>{
+                        vlmread(read.result)
+                    })
+                    read.readAsDataURL(ev.target.files[0]);
+                  })
+                  filewidh.addEventListener("change",()=>{
+                    if(!activeimg) return;
+                    const heightval = fileaspect.checked ? filewidh.value / originalel : fileheight.value
+                    vlmresize(filewidh.value,heightval)
+                  })
+                  fileheight.addEventListener("change",()=>{
+                    if(!activeimg) return;
+                    const widthval = fileaspect.checked ? fileheight.value / originalel : filewidh.value
+                    vlmresize(widthval,fileheight.value)
+                  })
+                  function vlmread(vlmimg){
+                    activeimg=new Image();
+                    activeimg.addEventListener("load",()=>{
+                        originalel=activeimg.width / activeimg.height;
+
+                        vlmresize(activeimg.width , activeimg.height)
+                    })
+                    activeimg.src=vlmimg
+                    activeimg.name='vlmimg'
+                   //post your newly created data url
+                    console.log(activeimg)
+                  }
+                  function vlmresize(width,height){
+                    filecanvas.width=Math.floor( width);
+                    filecanvas.height=Math.floor( height)
+                    filewidh.value=Math.floor( width)
+                    fileheight.value=Math.floor( height)
+
+                   const yi= canvasctx.drawImage(activeimg,0,0,Math.floor(width),Math.floor(height))
+                   console.log(yi)
+                  }
+                    </script>

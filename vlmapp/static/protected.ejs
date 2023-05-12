@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./css/call.css">
+    <script>
+     
+
+        document.addEventListener("DOMContentLoaded",()=>{
+            // my nav
+            // When filter, slide down the navbar
+   
+            // menu
+            let menu= document.querySelector(".vlmtoggle")
+            let nav= document.querySelector(".vlmnav")
+            let main= document.querySelector(".vlmmain")
+
+            menu.onclick=function(){
+                nav.classList.toggle("vlmactive")
+                main.classList.toggle("vlmactive")
+
+            }
+             // my view
+             
+            const products = document.querySelector('.vlmproducts');
+            const home = document.querySelector('.vlmhome');
+            const blogs = document.querySelector('.blogs');
+            const vlmcont = document.querySelector('.vlmhomy');
+
+
+            const customers = document.querySelector('.customers');
+
+            const inbox = document.querySelector('.inbox');
+            const reports = document.querySelector('.reports');
+   
+            products.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+
+                <div class="vlmproduct">
+                  
+                  <div class="vlmnone">
+                    <form class="needs-validation" method="post" action="#" enctype="multipart/form-data" class="form" novalidate>
+                  <div class="ion">
+                    <h3>Add products</h3>
+                    <br>
+                    
+                        <input type="text" name="vlmcart" class="input" id="add" placeholder="Title" required>
+                    <br>
+                    <input type="text" name="category" class="input" placeholder="category" required>
+                    <br>
+                    <input type="text" name="vlmcost" id="add" class="input" placeholder="cost: ksh 0" required>
+                    <br>
+                    <input type="text" name="vlmdescription" class="input" placeholder="place your description" required>
+                    <br>
+                    
+                
+                    <select class="vion" name="call">
+                      <option>Active</option>
+                      <option>Disable</option>
+                    </select>
+                    <br>
+                    <div class="drop-zone">
+                        <span class="drop-zone__prompt" >Drag a file here or click to upload</span>
+                        <!-- <div class="drop-zone__thumb" data-label="myfile.txt"></div> -->
+                        <input type="file" name="vlmfile" class="drop-zone__input">
+                    </div>
+                    <div class="dimensions">
+                        <input type="text" class="resizer__input--width" value="0">
+                        x
+                        <input type="text" class="resizer__input--height" value="0">
+                    </div>
+                    <br>
+                    <input type="checkbox" class="resizer__aspect"> 
+                    aspect ratio
+                    <br>
+                    <button  type="submit" id="vlmbtn" class="vlmbt">submit</button>
+          
+                  </div>
+            
+                    </div>
+                    <div class="vlmbtn">
+                      <input type="submit" name="btnvlm" id="vlmbtn" value="add Products">
+                      </div>
+                    </form>
+                    <div class="app-content-actions">
+                      
+                        <input class="search-bar" placeholder="Search..." type="text">
+                        <div class="app-content-actions-wrapper">
+                          <div class="filter-button-wrapper">
+                            <button class="action-button filter jsFilter" id="jsFilter"><span>Filter</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg></button>
+                            <div class="filter-menu">
+                              <label>Category</label>
+                              <select>
+                                <option>All Categories</option>
+                                <option>Furniture</option>                     <option>Decoration</option>
+                                <option>Kitchen</option>
+                                <option>Bathroom</option>
+                              </select>
+                              <label>Status</label>
+                              <select>
+                                <option>All Status</option>
+                                <option>Active</option>
+                                <option>Disabled</option>
+                              </select>
+                              <div class="filter-menu-buttons">
+                                <button class="filter-button reset">
+                                  Reset
+                                </button>
+                                <button class="filter-button apply">
+                                  Apply
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <button class="action-button list active" title="List View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                          </button>
+                          <button class="action-button grid" title="Grid View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                          </button>
+                        </div>
+                      </div>
+                   
+
+                      <!-- added products -->
+                      <div class="products-area-wrapper tableView">
+                        <div class="products-header">
+                          <div class="product-cell image">
+                            Items
+                            <button class="sort-button">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"></path></svg>
+                            </button>
+                          </div>
+                          <div class="product-cell category">Category<button class="sort-button">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"></path></svg>
+                            </button></div>
+                          <div class="product-cell status-cell">Status<button class="sort-button">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"></path></svg>
+                            </button></div>
+                          <div class="product-cell sales">Sales<button class="sort-button">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"></path></svg>
+                            </button></div>
+                       
+                          <div class="product-cell price">Price<button class="sort-button">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"></path></svg>
+                            </button></div>
+
+                            <div class="product-cell stock">Delete<button class="sort-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"></path></svg>
+                              </button></div>
+                        </div>
+                      
+                        <div class="products-row">
+                          <button class="cell-more-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                          </button>
+                            <div class="product-cell image">
+                              <img src="./img/product-8.jpg" alt="product">
+                              <span>
+                                <%- vlmprod %>
+                            </span>
+                            </div>
+                          <div class="product-cell category"><span class="cell-label">Category:</span>book</div>
+                          <div class="product-cell status-cell">
+                            <span class="cell-label">Status:</span>
+                            <span class="status active">Active</span>
+                          </div>
+                          <div class="product-cell sales"><span class="cell-label">Sales:</span>32</div>
+                          <div class="product-cell price"><span class="cell-label">Price:</span>ksh <%- vlmpod %></div>
+                          <div class="product-cell stock"><span class="cell-label">Stock:</span>Delete</div>
+                        </div>
+                      </div>
+                </div>
+                `
+                document.querySelector(".jsFilter").addEventListener("click", function () {
+                    document.querySelector(".filter-menu").classList.toggle("active");
+                  });
+                  
+                  document.querySelector(".grid").addEventListener("click", function () {
+                    document.querySelector(".list").classList.remove("active");
+                    document.querySelector(".grid").classList.add("active");
+                    document.querySelector(".products-area-wrapper").classList.add("gridView");
+                    document
+                      .querySelector(".products-area-wrapper")
+                      .classList.remove("tableView");
+                  });
+                  
+                  document.querySelector(".list").addEventListener("click", function () {
+                    document.querySelector(".list").classList.add("active");
+                    document.querySelector(".grid").classList.remove("active");
+                    document.querySelector(".products-area-wrapper").classList.remove("gridView");
+                    document.querySelector(".products-area-wrapper").classList.add("tableView");
+                  });
+                  document.querySelector(".vlmbtn").addEventListener("click",()=>{
+                    document.querySelector(".vlmnone").style.display="block"
+                  })
+                  document.querySelector(".vlmbt").addEventListener("click",()=>{
+                    document.querySelector(".vlmnone").style.display="none"
+                  })
+                  // show products as json file
+
+                  // add you image functionality
+                  // drag and drop
+                  document.querySelectorAll(".drop-zone__input").forEach(inputElement=>{
+                    const dropzomeele= inputElement.closest(".drop-zone")
+
+
+                    dropzomeele.addEventListener("dragover",e=>{
+                        e.preventDefault();
+                        dropzomeele.classList.add("drop-zone--over")
+                    });
+
+                    ['dragleave','dragend'].forEach(typ=>{
+                        dropzomeele.addEventListener(typ,e=>{
+                            dropzomeele.classList.remove("drop-zone--over")
+                        })
+                    });
+                    const filewidh= document.querySelector(".resizer__input--width")
+                    const fileheight= document.querySelector(".resizer__input--height")
+                    const fileaspect= document.querySelector(".resizer__aspect")
+
+                    dropzomeele.addEventListener("drop", e=>{
+                        e.preventDefault();
+                        if(e.dataTransfer.files.length){
+                            inputElement.files=e.dataTransfer.files;
+                            vlmupdate(dropzomeele,e.dataTransfer.files[0])
+                        }
+                        const ti=e.dataTransfer.files[0]
+                        console.log(ti)
+                        dropzomeele.classList.remove("drop-zon--over")
+                    })
+
+                    function vlmupdate(dropzone,file){
+                        let thumbele=dropzomeele.querySelector(".drop-zone__thumb");
+
+                        if(dropzomeele.querySelector(".drop-zone__prompt")){
+                            dropzomeele.querySelector(".drop-zone__prompt").remove()
+                        }
+                        if(!thumbele){
+                            thumbele=document.createElement("div")
+                            thumbele.classList.add("drop-zone__thumb")
+                            dropzomeele.appendChild(thumbele)
+                        }
+
+                        thumbele.dataset.label=file.name
+
+                        if(file.type.startsWith("image/")){
+                            const io = new FileReader();
+
+                            io.readAsDataURL(file)
+                            io.onload=()=>{
+                                //const queryParams = new URLSearchParams(window.location.search);
+                                //queryParams.set('image', imageDataUrl);
+                                thumbele.style.backgroundImage=`url('${io.result}')`;
+                            }
+                        }
+
+                    }
+
+                  })
+
+
+
+                 
+            })
+           blogs.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>blogs</h2>
+                    my blogs content
+                </div>
+                `
+            })
+            customers.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>customers</h2>
+                    my customers content
+                </div>
+                `
+            })
+
+            inbox.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>inbox</h2>
+                    my inboxt content
+                </div>
+                `
+            })
+
+           reports.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>reports</h2>
+                    my report content
+                </div>
+                `
+            })
+            home.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="maincard">
+
+                    <div class="vlmcard">
+                        <div>
+                            <div class="numbers">15,000</div>
+                            <div class="cardname">Daily views</div>
+                        </div>
+                        <div class="iconbx">
+                    <!-- eye -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                      </svg>
+                        </div>
+                    </div>
+    
+                    <div class="vlmcard">
+                        <div>
+                            <div class="numbers">1000</div>
+                            <div class="cardname">sales</div>
+                        </div>
+                        <div class="iconbx">
+                    <!-- eye -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0z"/>
+                      </svg>
+                        </div>
+                    </div>
+    
+                    
+                    <div class="vlmcard">
+                        <div>
+                            <div class="numbers">20</div>
+                            <div class="cardname">Inbox</div>
+                        </div>
+                        <div class="iconbx">
+                    <!-- eye -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>                    </span>
+    
+                        </div>
+                    </div>
+    
+                    <div class="vlmcard">
+                        <div>
+                            <div class="numbers">ksh 20,000</div>
+                            <div class="cardname">Earnings</div>
+                        </div>
+                        <div class="iconbx">
+                    <!-- cash -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+                      <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                      <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"/>
+                    </svg>
+                        </div>
+          
+                    </div>
+                </div>
+
+                <!-- order list -->
+                <div class="details">
+                    <div class="recent">
+                        <div class="cardheader">
+                            <h2>Bought courses</h2>
+                            <a href="#" class='btn'>View All</a>
+
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Price</td>
+                                    <td>Payment</td>
+                                    <td>Status</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Javascript Book</td>
+                                    <td>ksh 1200</td>
+                                    <td>Due</td>
+                                    <td><span class="vlmstatus return">return</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Javascript Book</td>
+                                    <td>ksh 1200</td>
+                                    <td>paid</td>
+                                    <td><span class="vlmstatus delivered">Already bought</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Github Book</td>
+                                    <td>ksh 1200</td>
+                                    <td>Due</td>
+                                    <td><span class="vlmstatus pending">pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>python Book</td>
+                                    <td>ksh 1200</td>
+                                    <td>Due</td>
+                                    <td><span class="vlmstatus inprogress">inprogress</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Javascript course</td>
+                                    <td>ksh 1200</td>
+                                    <td>paid</td>
+                                    <td><span class="vlmstatus delivered">Already bought</span></td>
+                                </tr>
+                                <tr>
+                                    <td>typescript Book</td>
+                                    <td>ksh 1200</td>
+                                    <td>Due</td>
+                                    <td><span class="vlmstatus pending">pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>php Book</td>
+                                    <td>ksh 1200</td>
+                                    <td>Due</td>
+                                    <td><span class="vlmstatus inprogress">inprogress</span></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        
+                    </div>
+                    <!-- new customers -->
+                    <div class="vlmrecents">
+                        <div class="vlmcardheader">
+                            <h2>Recent Customers</h2>
+                        </div>
+                        <table>
+                            <tr>
+                                <td width="60px">
+                                    <div class="imgbx">
+                                        <img src="./img/vlm.png" alt="">
+                                    </div>
+                                </td>
+                                <td><h4>Vincent <br><span>Kenya</span></h4></td>
+                            </tr>
+                            <tr>
+                                <td width="60px">
+                                    <div class="imgbx">
+                                        <img src="./img/vlm.png" alt="">
+                                    </div>
+                                </td>
+                                <td><h4>Vincent <br><span>Kenya</span></h4></td>
+                            </tr>
+                            <tr>
+                                <td width="60px">
+                                    <div class="imgbx">
+                                        <img src="./img/vlm.png" alt="">
+                                    </div>
+                                </td>
+                                <td><h4>Vincent <br><span>Kenya</span></h4></td>
+                            </tr>
+                            <tr>
+                                <td width="60px">
+                                    <div class="imgbx">
+                                        <img src="./img/logo.png" alt="">
+                                    </div>
+                                </td>
+                                <td><h4>Vincent <br><span>Kenya</span></h4></td>
+                            </tr>
+                            <tr>
+                                <td width="60px">
+                                    <div class="imgbx">
+                                        <img src="./img/logo.png" alt="">
+                                    </div>
+                                </td>
+                                <td><h4>Vincent <br><span>Kenya</span></h4></td>
+                            </tr>
+                            <tr>
+                                <td width="60px">
+                                    <div class="imgbx">
+                                        <img src="./img/logo.png" alt="">
+                                    </div>
+                                </td>
+                                <td><h4>Vincent <br><span>Kenya</span></h4></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                `
+
+            })
+            home.click()
+
+            let list=document.querySelectorAll(".vlmnav li");
+            function vlmactive(){
+                list.forEach((item)=>
+                item.classList.remove("hovered"));
+                this.classList.add("hovered");
+            }
+            list.forEach((item)=>
+                item.addEventListener("mouseover",vlmactive))
+        })
+    </script>
+</head>
+<body>
+
+
+    <div class="vlmcontainer">
+        <div class="vlmnav">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <!-- apple -->
+<svg xmlns="http://www.w3.org/2000/svg"   width="26" height="26" fill="currentColor" class="bi bi-apple" viewBox="0 0 16 16">
+    <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516.024.034 1.52.087 2.475-1.258.955-1.345.762-2.391.728-2.43Zm3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422.212-2.189 1.675-2.789 1.698-2.854.023-.065-.597-.79-1.254-1.157a3.692 3.692 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56.244.729.625 1.924 1.273 2.796.576.984 1.34 1.667 1.659 1.899.319.232 1.219.386 1.843.067.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758.347-.79.505-1.217.473-1.282Z"/>
+    <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516.024.034 1.52.087 2.475-1.258.955-1.345.762-2.391.728-2.43Zm3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422.212-2.189 1.675-2.789 1.698-2.854.023-.065-.597-.79-1.254-1.157a3.692 3.692 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56.244.729.625 1.924 1.273 2.796.576.984 1.34 1.667 1.659 1.899.319.232 1.219.386 1.843.067.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758.347-.79.505-1.217.473-1.282Z"/>
+  </svg>
+                        </span>
+                        <span class="title">VLM</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="vlmhome">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="title">Home</span>
+                    </a>
+                </li>
+
+    
+                <li>
+                    <a href="#" class="vlmproducts">
+                        <span class="icon" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        </span>
+                        <span class="title">Products</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="blogs">
+                        <span class="icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4V3.6C3 3.26863 3.26863 3 3.6 3Z" stroke="currentColor" stroke-width="1.5"></path>
+                                <path d="M9.75 9.75V21" stroke="currentColor" stroke-width="1.5"></path>
+                                <path d="M3 9.75H21" stroke="currentColor" stroke-width="1.5"></path>
+                            </svg>
+                        </span>
+                        <span class="title">Blogs</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="customers">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                              </svg>
+                        </span>
+                        <span class="title">Customers</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="inbox">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>                    </span>
+
+                        </span>
+                        <span class="title">inbox</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="reports">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-yin-yang" viewBox="0 0 16 16">
+                                <path d="M9.167 4.5a1.167 1.167 0 1 1-2.334 0 1.167 1.167 0 0 1 2.334 0Z"/>
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 0 1-7-7Zm7 4.667a1.167 1.167 0 1 1 0-2.334 1.167 1.167 0 0 1 0 2.334Z"/>
+                              </svg>
+                        </span>
+                        <span class="title">Reports</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                          </svg>
+                        </span>
+                        <span class="title">logout</span>
+                    </a>
+                </li>
+            </ul>
+            
+        </div>
+        <!--  vlmamin-->
+        <div class="vlmmain">
+            <div class="vlmtopbar" id="vlmtopbar">
+                <div class="vlmtoggle">
+        
+                        <svg version="1.0" width="35" height="35" xmlns="http://www.w3.org/2000/svg"
+ width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+ stroke="none">
+<path d="M92 4193 c-18 -9 -45 -32 -60 -51 -22 -29 -27 -46 -27 -93 0 -62 17
+-94 69 -133 l27 -21 2459 0 2459 0 27 21 c52 39 69 71 69 133 0 47 -5 64 -27
+93 -57 74 181 68 -2530 68 -2232 0 -2436 -2 -2466 -17z"/>
+<path d="M95 2706 c-67 -29 -105 -106 -91 -181 9 -47 59 -102 104 -115 26 -8
+785 -10 2474 -8 l2437 3 27 21 c53 39 69 71 69 134 0 63 -16 95 -69 134 l-27
+21 -2447 2 c-2019 2 -2452 0 -2477 -11z"/>
+<path d="M95 1216 c-93 -40 -122 -160 -60 -241 52 -70 -40 -65 1325 -65 1371
+0 1272 -5 1328 68 22 29 27 46 27 93 0 62 -17 94 -69 133 -27 21 -32 21 -1274
+23 -1021 2 -1253 0 -1277 -11z"/>
+</g>
+</svg>
+                </div>
+                <div class="vlmsearch">
+                    <label>
+                        <input type="text" name="" placeholder="search here" id="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                          </svg>
+                    </label>
+                </div>
+                <!-- user img -->
+                <div class="vlmuser">
+                    <img src="./img/vlm.png" alt="">
+                </div>
+            </div>
+            <div class="vlmhomy">
+                
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

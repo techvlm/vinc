@@ -1,0 +1,24 @@
+{
+    "name": "vlmapp",
+    "version": "1.0",
+    "description":"checks if admin token is vailable",
+    "manifest_version": 1,
+    "icons":{
+
+    },
+    "author":"vincent mwendwa mutie",
+    "content_scripts":{
+      {
+        "matches":[]
+      }
+    },
+    "background": {
+      "service_worker": "vlm.js"
+    },
+
+    "permissions": [
+      "alarms"
+    ],
+    "action": {}
+  }
+  

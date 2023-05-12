@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import {
     bold,
     brightBlue,
@@ -24,6 +25,8 @@ import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } 
 import { vlmval } from './validate.ts';
 
 // deno-lint-ignore-file
+// deno-lint-ignore-file
+// deno-lint-ignore-file
 class vlmtimer{
     async logger(ctx:any,next:Function){
         const start = Date.now();
@@ -31,7 +34,7 @@ class vlmtimer{
         const ms = Date.now() - start;
         ctx.response.headers.set("X-Response-Time", `${ms}ms`);
         const rt = ctx.response.headers.get("X-Response-Time");
-        console.log(gray(`[*] ${ctx.request.method} ${ctx.request.url} - `) ,brightBlue(`${rt}`));
+        console.log(gray(`[*] ${ctx.request.method} ${ctx.request.url} - `) ,brightBlue(`${rt} ${red(' Not Found :(')}`));
     }
 }
 
@@ -48,7 +51,7 @@ class vlmcotroller{
         ctx.response.body= await renderFileToString
         (`${Deno.cwd()}/vlmapp/static/vlm.ejs`
         ,{
-            title:"vince",
+            title:"like@dev",
         })
        }
        async vlmcheck(ctx:RouterContext<string,any>)  {
@@ -56,7 +59,7 @@ class vlmcotroller{
         ctx.response.body= await renderFileToString
         (`${Deno.cwd()}/vlmapp/static/valid.ejs`
         ,{
-            title:"vince",
+            title:"like@dev",
         })
        }
     async vlmcss(ctx:RouterContext<string,any>){
@@ -92,7 +95,7 @@ class vlmcotroller{
         ctx.response.headers.set("Content-Type", "text/html");
         ctx.response.body= await renderFileToString(`${Deno.cwd()}/vlmapp/static/register.ejs`
         ,{
-            title:"vince dev Signup",
+            title:"like@dev Signup",
             error:undefined||null||false
         })
         ctx.response.status=200;
@@ -200,34 +203,52 @@ if(pass !=null){
         }else{
             
             const client = new SmtpClient(); 
-            // const env:any =Deno.env.toObject();
             const top =await vlmtoken(vlmpayload_email(email))
+
             if (top !=null) {
-                ctx.response.status =201;
-                const url = `https://vince.deno.dev/valid?vlm=${top}`
-            
-                await client.connectTLS({
-                    hostname: "smtp.gmail.com",
-                    port: 465,
-                    username: "vincentmwendwa003@gmail.com",
-
-                    password:"kopvfirdbdqvsslb",
-                  });
-                  await client.send({
-                    from:"vincentmwendwa003@gmail.com",
-                    to: userhope.email,
-                    subject: `Welcome ${userhope.user} Please confirm your email address`,
-                    content: `
-                    Hi from vincent, your link will expire after 1 minute
-                    <br/>
-                    <span>here is your link ... </span><a href=${url}>${url}</a>
-
-                    `
-                  });
-                  await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
-                  const userd:any= await vlmuserid(userhope.user)
-                  ctx.cookies.set("vlmid",userd?._id)
-                  ctx.response.redirect("/Signin");
+                const url = `http://127.0.0.1:6060/valid?vlm=${top}=${userhope.user}`
+                try {
+                    const fo=Deno.env.toObject()
+                    await client.connectTLS({
+                      hostname: "smtp.gmail.com",
+                      port: 465,
+                      username:fo.vlm_mail,
+                      password:fo.vlm_password,
+                    });
+                    
+                    await client.send({
+                      from: fo.vlm_mail,
+                      to: fo.SEND_EMAIL,
+                      subject: ` Please confirm your email address`,// Email address of the destination
+                      content:"thnaks for registering to my website i will surely not disappoint",
+                      html:`
+                      <!DOCTYPE html>
+                      <html lang="en">
+                      <head>
+                          <meta charset="UTF-8">
+                          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      </head>
+                      <body>
+                      <div id="you">
+                      Welcome ${userhope.user}
+                      </div>
+                      <a href="${url}" class="me">Verify me</a>
+                      </body>
+                      </html>
+                      `
+                    });
+                    
+                    await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
+                    const userd:any= await vlmuserid(userhope.user)
+                    ctx.cookies.set("vlmid",userd?._id)
+                    ctx.response.status =201;
+                    ctx.response.redirect("/Signin");
+                    await client.close();
+                  } catch (error) {
+                    console.log(red("VLM :) " + error))
+                  }
+        
 
             }
 
@@ -280,21 +301,47 @@ if(pass !=null){
                 access_token0:await vlmtoken(vlmpayload_admin(yop.user)),
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
-            const env =Deno.env.toObject();
-            if(yet.vlmmail == env.SEND_EMAIL){
-                // for admin
-                console.log(res.access_token0,"for admin")
+
+            // if(yet.vlmmail==Deno.env.toObject().SEND_EMAIL){
+            //     console.log("you are vlm ")
+            //     ctx.response.status=200;
+            //     ctx.response.body=res.access_token0
+
+
+            // }else{
+            //     ctx.cookies.set("vlmid",yet.vlmid)
+            //     const client =res.access_token 
+            //     ctx.cookies.set("client",client,{httpOnly:true});
+            //     ctx.response.redirect("/dashboard")
+            //         // console.log("for client auth")
+            // }
+
+              
+                // ctx.response.status=200;
+                // ctx.response.body=res.access_token0
+                // const check= await checkvlmemails(yop.user)
+                // // console.log("you are vlm")
+                // if (check?.user=="vlm") {
+                //     // if (check?.email==yet.vlmemail) {
+                //     // }
+                //     console.log(check?.email)
+                // }
                 
-            }else{
-                ctx.cookies.set("vlmid",yet.vlmid)
-                const client =res.access_token 
-                ctx.cookies.set("client",client,{httpOnly:true});
-                ctx.response.redirect("/dashboard")
-                // ctx.response.body=await renderFileToString(`${Deno.cwd()}/vlmapp/static/dashboard.ejs`,{title:"Dashboard!"});
-            }
 
 
+            // if (yop.user !="vlm"){
+                // if (check?.user!=yop.user) {
+                    ctx.cookies.set("vlmid",yet.vlmid)
+                    const client =res.access_token 
+                    ctx.cookies.set("client",client,{httpOnly:true});
+                    console.log("client")
+                    ctx.response.redirect("/dashboard")
+                // }
+                    // console.log("for client auth")
+            // }
         }
+
+
     }
 
 
@@ -307,9 +354,24 @@ if(pass !=null){
         ctx.response.headers.set("Content-Type", "text/html");
         ctx.response.body= await renderFileToString(`${Deno.cwd()}/vlmapp/static/login.ejs`
         ,{
-            title:"vince dev Signin",
+            title:"like@dev Signin",
             error:undefined||null||false
         })
+        ctx.response.status=200;
+    }
+    async vlmadmin(ctx:RouterContext<string,any>){
+    //    await vlmproducts()
+
+        ctx.response.body= await renderFileToString(`${Deno.cwd()}/vlmapp/static/protected.ejs`
+        ,{
+            title:"Admin",
+            click:"vlmhome",
+            vlmprod:"rop?.title",
+            vlmpod:"rop?.price",
+            vlmimg:""
+            
+        })
+        
         ctx.response.status=200;
     }
     async vlmtake(ctx:RouterContext<string,any>){
@@ -321,17 +383,60 @@ if(pass !=null){
         ctx.response.headers.set("Content-Type", "text/html");
         ctx.response.body= await renderFileToString(`${Deno.cwd()}/vlmapp/static/dashboard.ejs`
         ,{
-            title:"vince dev Signin",
+            title:"dashboard",
             user:foo
         })
         ctx.response.status=200;
     }
+    async vlmadminpost(ctx:RouterContext<string,any>){
+        // const vlmbody= ctx.request.body({type:"form"});
+        // const vlmvalue = await vlmbody.value;
+        // const title = vlmvalue.get('vlmcart');
+        // const cost= vlmvalue.get('vlmcost');
+        // const des = vlmvalue.get('vlmdescription');
+        // // const vife:any = vlmvalue.get('myfile');
+        // const call = vlmvalue.get('call');
+        //  // Convert the array buffer to a base64-encoded 
+  
+         
+        // console.log(title,cost,des,call)
+//         const decodedImageData = atob(vife);
+// const blob = new Blob([decodedImageData], { type: "image/jpeg" });
+// console.log(blob)
+
+try {
+    const formDataReader = ctx.request.body({ type: "form-data" }).value;
+    const formDataBody = await formDataReader.read({ maxSize: 10000000 }); // Max file size to handle
+
+const y:any= formDataBody.files
+y.forEach(async (item:any) =>{
+    // console.log(item.content)
+    const blob = new Blob([item.content], { type: "image/jpeg" });
+    // Create a URL object from the Blob
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = function() {
+        const dataUrl = reader.result;
+        console.log(`\n\n\t${dataUrl}`);
+      };
+
+} )
+    // console.log()
+
+  } catch (error) {
+    // Handle error response
+    console.log(red("vlm " + error))
+  }
+
+    }
 }
-const {vlmpostsignup,vlmpostsignin,vlmhome,vlmcss,vlmjs,vlmimg,vlmregister,vlmlogin,vlmdelete,vlmlist,vlmlistid,vlmtake,vlmtake1,vlmcssboot,vlmjsboot,vlmpatch,vlmcheck}= new vlmcotroller();
+const {vlmpostsignup,vlmadminpost,vlmadmin,vlmpostsignin,vlmhome,vlmcss,vlmjs,vlmimg,vlmregister,vlmlogin,vlmdelete,vlmlist,vlmlistid,vlmtake,vlmtake1,vlmcssboot,vlmjsboot,vlmpatch,vlmcheck}= new vlmcotroller();
 const {logger}= new vlmtimer();
 
 export {
   logger,
+  vlmadmin,
+  vlmadminpost,
   vlmcheck,
   vlmcss,
   vlmcssboot,

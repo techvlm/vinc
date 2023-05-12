@@ -311,3 +311,32 @@ const key = await crypto.subtle.generateKey(
 ```
 
 Running my vbs scripts using deno
+
+
+<!-- help me in hacking  -->
+## commands
+* sudo bash
+* help
+* 
+* 
+
+<!-- for scanning -->scan
+* scanme nmap.org
+
+<!-- command for installing pip in windows -->
+* sudo apt install python3-pip
+
+<!-- installing modules in my computer using virtual_env modules -->
+##  setting up vlmenv
+<!-- activate scripts in windows -->
+* python -m venv vlmenv
+* vlmenv\Scripts\activate 
+* pip install -r vlm.txt
+* python -m pip install --upgrade pip
+* python setup.py install
+* django-admin startproject
+
+<!-- create a sssl certi\ -->
+* openssl req -x509 -newkey rsa:4096 -nodes -sha256 -subj "/CN=localhost" -keyout private.pem -out cert.pem
+
+

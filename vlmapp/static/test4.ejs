@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./css/dash.css">
+    <!-- <link rel="stylesheet" href="./css/dash.css">
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            let menu= document.querySelector(".menuToggle")
+            let nav = document.querySelector('.navigation')
+    
+            menu.onclick = function(){
+                nav.classList.toggle('vlmopen');
+                
+            }
+            const list = document.querySelectorAll('.list');
+            function vlm(){
+                list.forEach((item)=>
+                item.classList.remove('active'))
+                this.classList.add('active')
+            }
+            list.forEach((item)=>item.addEventListener('click',vlm))
+
+        })
+    </script> -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root{
+            --bg:#5f7efc;
+        }
+        .navigation{
+            position: absolute;
+            width: 75px;
+            height: 100%;
+            display: flex;
+            float: left;
+            background: #cfd1e1;
+            box-shadow: 5px 5px 10px -4px #555;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            position: fixed;
+            transition: 0.5s;
+        }
+        .navigation.vlmopen{
+            width: 250px;
+        }
+        .navigation.vlmopen .menuToggle::before{
+          transform: translateY(0) rotate(45deg);
+          -webkit-transform: translateY(0) rotate(45deg);
+          -moz-transform: translateY(0) rotate(45deg);
+          -ms-transform: translateY(0) rotate(45deg);
+          -o-transform: translateY(0) rotate(45deg);
+        }
+        .navigation.vlmopen .menuToggle::after{
+          transform: translateY(0) rotate(-45deg);
+          -webkit-transform: translateY(0) rotate(-45deg);
+          -moz-transform: translateY(0) rotate(-45deg);
+          -ms-transform: translateY(0) rotate(-45deg);
+          -o-transform: translateY(0) rotate(-45deg);
+          box-shadow: 0 0 0 #333;
+        }
+        .menuToggle{
+            padding: 0 23px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width:100%;
+            height:60px;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .menuToggle::before{
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background: #505353;
+            transform: translateY(-8px);
+            -webkit-transform: translateY(-8px);
+            -moz-transform: translateY(-8px);
+            -ms-transform: translateY(-8px);
+            -o-transform: translateY(-8px);
+            transition:0.5s;
+            -webkit-transition:0.5s;
+            -moz-transition:0.5s;
+            -ms-transition:0.5s;
+            -o-transition:0.5s;
+        }
+        .menuToggle::after{
+            content: '';
+            position: absolute;
+            transform: translateY(8px);
+            -webkit-transform: translateY(8px);
+            -moz-transform: translateY(8px);
+            -ms-transform: translateY(8px);
+            -o-transform: translateY(8px);
+            transition:0.5s;
+            width: 30px;
+            height: 2px;
+            background: #323333;
+            box-shadow: 0 -8px 0 #3a3a3a;
+            -webkit-transition:0.5s;
+            -moz-transition:0.5s;
+            -ms-transition:0.5s;
+            -o-transition:0.5s;
+        }
+        
+        /* continue with li */
+        .navigation ul{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        .navigation ul li {
+            list-style: none;
+            position: relative;
+            width: 100%;
+            height: 60px;
+            padding: 0 10px;
+            transition: 0.5s;
+            -webkit-transition: 0.5s;
+            -moz-transition: 0.5s;
+            -ms-transition: 0.5s;
+            -o-transition: 0.5s;
+        }
+        .navigation ul li a{
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            text-decoration: none;
+        }
+        .navigation ul li a .icon{
+            position: relative;
+            display: block;
+            min-width: 45px;
+            height:45px;
+            line-height: 55px;
+            color:rgba(50, 48, 50, 0.686);
+            transition: 0.5s;
+            -webkit-transition: 0.5s;
+            -moz-transition: 0.5s;
+            -ms-transition: 0.5s;
+            -o-transition: 0.5s;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -ms-border-radius: 10px;
+            -o-border-radius: 10px;
+            font-size: 1em;
+        }
+        .navigation ul li.active a .icon {
+            color: rgb(255, 255, 255);
+            background: var(--clr);
+        }
+        .navigation ul li a .icon::before{
+           content: '';
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: var(--clr);
+           filter: blur(8px);
+           -webkit-filter: blur(8px);
+           opacity: 0;
+           transition: 0.5s;
+           -webkit-transition: 0.5s;
+           -moz-transition: 0.5s;
+           -ms-transition: 0.5s;
+           -o-transition: 0.5s;
+        }
+        
+        .navigation ul li.active a .icon::before{
+            opacity: 0.5;
+        }
+        .navigation ul li a .text{
+            position: relative;
+            padding: 0 15px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            color:#333;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.5s;
+            -webkit-transition: 0.5s;
+            -moz-transition: 0.5s;
+            -ms-transition: 0.5s;
+            -o-transition: 0.5s;
+        }
+        
+        .navigation.vlmopen ul li a .text{
+            opacity: 1;
+            font-size: 1em;
+            color:#555555;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            visibility:visible;
+        }
+        
+        /* vlm pages */
+        /* @media screen and (max-width: 1024px) {
+            .sidebar {
+              display: none;
+            }
+          } */
+        
+        
+    </style>
+
+<!-- <div class="sidebar"> 
+       
+
+       <div class="navigation">
+        <div class="menuToggle"></div>
+        <ul>
+            <li class="list active " name="home" style="--clr:#092e35;" >
+                <a href="#">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </span>
+                    <span class="text">Home</span>
+                </a>
+            </li>
+
+            <li class="list" name="products" style="--clr:#142cc5;">
+                <a href="#" >
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </span>
+
+                    <span class="text">products</span>
+                </a>
+            </li>
+
+            <li class="list" name="blogs" style="--clr:#850c97;">
+                <a href="#" >
+                    <span class="icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4V3.6C3 3.26863 3.26863 3 3.6 3Z" stroke="currentColor" stroke-width="1.5"></path>
+                            <path d="M9.75 9.75V21" stroke="currentColor" stroke-width="1.5"></path>
+                            <path d="M3 9.75H21" stroke="currentColor" stroke-width="1.5"></path>
+                        </svg>
+                    </span>
+                    <span class="text">My blogs</span>
+                </a>
+            </li>
+
+            <li class="list" name="custommers" style="--clr:#781642;">
+                <a href="#" >
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                          </svg>
+                        </span>
+                    <span class="text">Customers</span>
+                </a>
+            </li>
+
+            <li class="list" name="analy" style="--clr:salmon;">
+                <a href="#" >
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                    </span>
+                    <span class="text">Analytics</span>
+                </a>
+            </li>
+
+            <li class="list sidebar-list-item" name="inbox" style="--clr:#61cf33;">
+                <a href="#" >
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>                    </span>
+                    <span class="text">Inbox</span>
+                </a>
+            </li>
+            <li class="list sidebar-list-item" name="reports" style="--clr:#f43636;">
+                <a href="#" >
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-yin-yang" viewBox="0 0 16 16">
+                            <path d="M9.167 4.5a1.167 1.167 0 1 1-2.334 0 1.167 1.167 0 0 1 2.334 0Z"/>
+                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 0 1-7-7Zm7 4.667a1.167 1.167 0 1 1 0-2.334 1.167 1.167 0 0 1 0 2.334Z"/>
+                          </svg>
+                        </span>
+                    <span class="text">Reports</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div> -->
+    
+
+
+<input type="checkbox" id="check">
+<!--header area start-->
+<header>
+  <label for="check">
+    <i class="fas fa-bars" id="sidebar_btn"></i>
+    <i class="fa-regular fa-bars-sort"></i>
+  </label>
+  <div class="left_area">
+    <h3>vlm<span>.dev</span></h3>
+  </div>
+  <div class="right_area">
+    <a href="/logout" class="logout_btn">Logout</a>
+  </div>
+</header>
+<!--header area end-->
+<!--mobile navigation bar start-->
+<div class="mobile_nav">
+  <div class="nav_bar">
+    <img src="./img/1.png" class="mobile_profile_image" alt="">
+    <i class="fa fa-bars nav_btn"></i>
+    <i class="fa-regular fa-bars-sort"></i>
+
+  </div>
+  <div class="mobile_nav_items">
+    <li class="list active " name="home" style="--clr:#092e35;" >
+      <a href="#">
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          </span>
+          <span class="text">Home</span>
+      </a>
+  </li>
+
+  <li class="list" name="products" style="--clr:#142cc5;">
+      <a href="#" >
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </span>
+
+          <span class="text">products</span>
+      </a>
+  </li>
+
+  <li class="list" name="blogs" style="--clr:#850c97;">
+      <a href="#" >
+          <span class="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4V3.6C3 3.26863 3.26863 3 3.6 3Z" stroke="currentColor" stroke-width="1.5"></path>
+                  <path d="M9.75 9.75V21" stroke="currentColor" stroke-width="1.5"></path>
+                  <path d="M3 9.75H21" stroke="currentColor" stroke-width="1.5"></path>
+              </svg>
+          </span>
+          <span class="text">My blogs</span>
+      </a>
+  </li>
+
+  <li class="list" name="custommers" style="--clr:#781642;">
+      <a href="#" >
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                </svg>
+              </span>
+          <span class="text">Customers</span>
+      </a>
+  </li>
+
+  <li class="list" name="analy" style="--clr:salmon;">
+      <a href="#" >
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+          </span>
+          <span class="text">Analytics</span>
+      </a>
+  </li>
+
+  <li class="list sidebar-list-item" name="inbox" style="--clr:#61cf33;">
+      <a href="#" >
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>                    </span>
+          <span class="text">Inbox</span>
+      </a>
+  </li>
+  <li class="list sidebar-list-item" name="reports" style="--clr:#f43636;">
+      <a href="#" >
+          <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-yin-yang" viewBox="0 0 16 16">
+                  <path d="M9.167 4.5a1.167 1.167 0 1 1-2.334 0 1.167 1.167 0 0 1 2.334 0Z"/>
+                  <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 0 1-7-7Zm7 4.667a1.167 1.167 0 1 1 0-2.334 1.167 1.167 0 0 1 0 2.334Z"/>
+                </svg>
+              </span>
+          <span class="text">Reports</span>
+      </a>
+  </li>
+  </div>
+</div>
+<!--mobile navigation bar end-->
+<!--sidebar start-->
+<div class="sidebar"> 
+  <div class="navigation">
+
+    <div class="menuToggle"></div>
+
+    <ul>
+      <div class="profile_info">
+        <img src="./img/logo.png" class="profile_image" alt="">
+        <h4>vincent</h4>
+      </div>
+        <li class="list active " name="home" style="--clr:#092e35;" >
+            <a href="#">
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </span>
+                <span class="text">Home</span>
+            </a>
+        </li>
+
+        <li class="list" name="products" style="--clr:#142cc5;">
+            <a href="#" >
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                </span>
+
+                <span class="text">products</span>
+            </a>
+        </li>
+
+        <li class="list" name="blogs" style="--clr:#850c97;">
+            <a href="#" >
+                <span class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4V3.6C3 3.26863 3.26863 3 3.6 3Z" stroke="currentColor" stroke-width="1.5"></path>
+                        <path d="M9.75 9.75V21" stroke="currentColor" stroke-width="1.5"></path>
+                        <path d="M3 9.75H21" stroke="currentColor" stroke-width="1.5"></path>
+                    </svg>
+                </span>
+                <span class="text">My blogs</span>
+            </a>
+        </li>
+
+        <li class="list" name="custommers" style="--clr:#781642;">
+            <a href="#" >
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                      </svg>
+                    </span>
+                <span class="text">Customers</span>
+            </a>
+        </li>
+
+        <li class="list" name="analy" style="--clr:salmon;">
+            <a href="#" >
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                </span>
+                <span class="text">Analytics</span>
+            </a>
+        </li>
+
+        <li class="list sidebar-list-item" name="inbox" style="--clr:#61cf33;">
+            <a href="#" >
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>                    </span>
+                <span class="text">Inbox</span>
+            </a>
+        </li>
+        <li class="list sidebar-list-item" name="reports" style="--clr:#f43636;">
+            <a href="#" >
+                <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-yin-yang" viewBox="0 0 16 16">
+                        <path d="M9.167 4.5a1.167 1.167 0 1 1-2.334 0 1.167 1.167 0 0 1 2.334 0Z"/>
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 0 1-7-7Zm7 4.667a1.167 1.167 0 1 1 0-2.334 1.167 1.167 0 0 1 0 2.334Z"/>
+                      </svg>
+                    </span>
+                <span class="text">Reports</span>
+            </a>
+        </li>
+    </ul>
+</div>
+</div>
+<!--sidebar end-->
+
+<div class="content">
+  <h2>Welcome back ,<p>vincent !</p></h2>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Library</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+  </nav>
+  <div class="card">
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+  </div>
+  <div class="card">
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+  </div>
+  <div class="card">
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+  </div>
+
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>
+</div>
+
+      
+</body>
+</body>
+</html>

@@ -1,0 +1,15 @@
+django
+cython
+kivy
+kivymd
+pillow
+requests
+djangorestframework
+numpy
+selenium
+scapy
+scipy
+tqdm
+pyautogui
+pandas
+opencv-contrib-python

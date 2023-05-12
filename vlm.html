@@ -1,0 +1,61 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Images as Data URLs</title>
+</head>
+<body>
+  <form id="image-form">
+    <input type="file" name="images" multiple>
+    <button type="submit">Upload</button>
+  </form>
+
+  <script>
+    async function upload(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+      
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData
+      });
+      
+      console.log(response);
+    }
+    
+    const form = document.getElementById("image-form");
+    form.addEventListener("submit", upload);
+  </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Images as Data URLs</title>
+</head>
+<body>
+  <form id="image-form" enctype="multipart/form-data" method="POST" action="/upload">
+    <input type="file" name="images" multiple>
+    <button type="submit">Upload</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("image-form");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+      const dataUrls = await response.json();
+      console.log(dataUrls);
+    });
+  </script>
+</body>
+</html>
+

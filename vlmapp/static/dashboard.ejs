@@ -1,37 +1,224 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/boot/bootstrap.min.css">
-  <script src="./js/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./css/dash.css">
+    <link rel="stylesheet" href="./css/boot/bootstrap.min.css">
+    <!-- <script type="module" src="./js/dash.js"></script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            let menu= document.querySelector(".menuToggle")
+            let nav = document.querySelector('.sidebar')
+    
+            menu.onclick = function(){
+                nav.classList.toggle('vlmopen');
+                
+            }
+            const list = document.querySelectorAll('.list');
+            function vlm(){
+                list.forEach((item)=>
+                item.classList.remove('active'))
+                this.classList.add('active')
+            }
+            const vlmcont = document.querySelector('.content');
+            const products = document.querySelector('.vlmproducts');
+            const home = document.querySelector('.vlmhome');
+            const blogs = document.querySelector('.blogs');
+
+            const customers = document.querySelector('.customers');
+
+            const Analytics = document.querySelector('.null');
+
+            const inbox = document.querySelector('.inbox');
+            const reports = document.querySelector('.reports');
+
+            products.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>products</h2>
+                    my product content
+                    <%= user %>
+                </div>
+                `
+            })
+
+           blogs.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>blogs</h2>
+                    my blogs content
+                </div>
+                `
+            })
+            customers.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>customers</h2>
+                    my customers content
+                </div>
+                `
+            })
+
+            Analytics.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>analysis</h2>
+                    my analysis content
+                </div>
+                `
+            })
+
+            inbox.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>inbox</h2>
+                    my inboxt content
+                </div>
+                `
+            })
+
+           reports.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h2>reports</h2>
+                    my report content
+                </div>
+                `
+            })
+            home.addEventListener('click',()=>{
+                vlmcont.innerHTML=`
+                <div class="all">
+                    <h1>Dashboard</h1>
+                    <div class="main">
+                        <div class="cards"></div>
+                        <div class="cards"></div>
+                        <div class="cards"></div>
+                        <div class="cards"></div>
+                        <div class="cards"></div>
+                        <div class="cards"></div>
+                    </div>
+                </div>
+
+                `
+
+            })
+            home.click()
+            list.forEach((item)=>item.addEventListener('click',vlm))
+
+        })
+    </script>
 </head>
 <body>
 
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </div>
-</div>
+      <!--header area start-->
+      <header>
+        <div class="right_area">
+          <a href="/logout" class="logout_btn">Logout</a>
+        </div>
+      </header>
+      <!--header area end-->
+      <!--mobile navigation bar start-->
+      <div class="mobile_nav">
+          <div class="nav_bar">
+              <img src="./img/vlm.png" class="mobile_profile_image" alt="">
+              <div class="menu"></div>
+            </div>
+        </div>
+      
+      <!--mobile navigation bar end-->
+      <!--sidebar start-->
+      <div class="sidebar"> 
+        <div class="profile_info">
+          <img src="./img/vlm.png" class="profile_image" alt="">
+          <h4><%= user %></h4>
 
-</body>
-</html>
+        <!-- add your ul here -->
+        <div class="menuToggle"></div>
+        <ul>
+              <li class="list active vlmhome" style="--clr:#092e35;" >
+                  <a href="#">
+                      <span class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                      </span>
+                      <span class="text">Home</span>
+                  </a>
+              </li>
+      
+              <li class="list vlmproducts" name="products" style="--clr:#142cc5;">
+                  <a href="#" >
+                      <span class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                      </span>
+      
+                      <span class="text">products</span>
+                  </a>
+              </li>
+      
+              <li class="list blogs" name="blogs" style="--clr:#850c97;">
+                  <a href="#" >
+                      <span class="icon">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.6 3H20.4C20.7314 3 21 3.26863 21 3.6V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4V3.6C3 3.26863 3.26863 3 3.6 3Z" stroke="currentColor" stroke-width="1.5"></path>
+                              <path d="M9.75 9.75V21" stroke="currentColor" stroke-width="1.5"></path>
+                              <path d="M3 9.75H21" stroke="currentColor" stroke-width="1.5"></path>
+                          </svg>
+                      </span>
+                      <span class="text">My blogs</span>
+                  </a>
+              </li>
+      
+              <li class="list customers" name="custommers" style="--clr:#781642;">
+                  <a href="#" >
+                      <span class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                            </svg>
+                          </span>
+                      <span class="text">Customers</span>
+                  </a>
+              </li>
+      
+              <li class="list null" name="analy" style="--clr:salmon;">
+                  <a href="#" >
+                      <span class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pie-chart"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                      </span>
+                      <span class="text">Analytics</span>
+                  </a>
+              </li>
+      
+              <li class="list inbox" name="inbox" style="--clr:#61cf33;">
+                  <a href="#" >
+                      <span class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>                    </span>
+                      <span class="text">Inbox</span>
+                  </a>
+              </li>
+              <li class="list reports" name="reports" style="--clr:#f43636;">
+                  <a href="#" >
+                      <span class="icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-yin-yang" viewBox="0 0 16 16">
+                              <path d="M9.167 4.5a1.167 1.167 0 1 1-2.334 0 1.167 1.167 0 0 1 2.334 0Z"/>
+                              <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 0 1 7-7 3.5 3.5 0 1 1 0 7 3.5 3.5 0 1 0 0 7 7 7 0 0 1-7-7Zm7 4.667a1.167 1.167 0 1 1 0-2.334 1.167 1.167 0 0 1 0 2.334Z"/>
+                            </svg>
+                          </span>
+                      <span class="text">Reports</span>
+                  </a>
+              </li>
+          </ul>
+        <!-- add your ul here -->
+      </div>
+    </div>
+      <!--sidebar end-->
+      <div class="mymobimenu"></div>
+      <div class="content">
+    
+        </div>
+      </div>
+
+  
+      </body>
+      </html>

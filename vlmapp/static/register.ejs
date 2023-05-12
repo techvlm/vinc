@@ -7,9 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> </title>
   <link rel="stylesheet" href="./css/boot/bootstrap.min.css">
-<script src="./js/jquery.min.js"></script>
-<script src="./js/vlmauth.js"></script>
-<link rel="stylesheet" href="./css/signup.css">
+  <script src="./js/vlmauth.js"></script>
+  <link rel="stylesheet" href="./css/signup.css">
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      const nop= document.querySelector("#checks")
+      const nops= document.querySelector("#check")
+      
+      nops.onclick=function(){
+        nop.click()
+      }
+    })
+  </script>
+  <script src="./js/jquery.min.js"></script>
 </head>
 <body>
   
@@ -79,8 +89,8 @@
   
       <a href="#">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required />
-          <span class="form-check-label" for="invalidCheck3">i agree to t/c</span>
+          <input class="form-check-input" id="checks" type="checkbox" value="" id="invalidCheck" required />
+          <span class="form-check-label" id="check" for="invalidCheck3">i agree to t/c</span>
         </div>
       </a>
     </div>
@@ -98,6 +108,9 @@
 </div>
 <script>
   // Example starter JavaScript for disabling form submissions if there are invalid fields
+
+
+
 (() => {
   'use strict';
 
@@ -115,6 +128,10 @@
     }, false);
   });
 })();
+
+
 </script>
+      
+
 </body>
 </html>

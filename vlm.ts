@@ -23,7 +23,7 @@ vlmapp.use(oakCors({
 // const controller = new AbortController();
 // const { signal,abort } = controller;
 
-// controller.abort();
+// controller.abort()z;
 vlmapp.addEventListener('listen',({
     hostname,port,secure
 })=>{
@@ -33,4 +33,4 @@ vlmapp.addEventListener('listen',({
     vlmapp.use(logger)
     return;
 })
-await vlmapp.listen({port:5050})
+await vlmapp.listen({port:6060})

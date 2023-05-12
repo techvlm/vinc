@@ -1,18 +1,62 @@
-// deno-lint-ignore-file
 import 'https:/deno.land/x/dotenv@v3.2.0/load.ts';
 
 import { Bson, Collection, create, getNumericDate, MongoClient } from './deps.ts';
 import { vlmkey } from './validate.ts';
 
 // deno-lint-ignore-file
+// deno-lint-ignore-file
 export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
   const client = new MongoClient();
-const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+// const like=`mongodb+srv://vlmdatabase:GWveXb2tj4xTc3Pr@cluster0.ccv0d.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`
+  // const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 // await client.connect("mongodb://localhost:27017/deno_portfolio")
 // await client.connect("mongodb://127.0.0.1:27017/deno_portfolio");
-await client.connect(like);
-  return client.database("vlmdbuser").collection<vlmUserSchema>("vlmusers");
+// await client.connect(like);
+
+await client.connect("mongodb://localhost:27017/vlmuserdb");
+  return client.database("vlmuserdb").collection<vlmUserSchema>("vlmusers");
 }
+export async function vlmconnects():Promise<Collection<vlmprducts>>{
+  const client = new MongoClient();
+// const like=`mongodb+srv://vlmdatabase:vlmlucy3256#@cluster0.ccv0d.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`
+  const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+// await client.connect("mongodb://localhost:27017/deno_portfolio")
+// await client.connect("mongodb://localhost:27017/deno_portfolio");
+await client.connect(like);
+return client.database("deno_portfolio").collection<vlmprducts>("vlmproducts");
+}
+
+export async function vlmlocals(user:any){
+  const result = await vlmconnects();
+  const res = await result.findOne({ _id:user });
+  return res;
+}
+export async function vlmlocal(){
+  const result = await vlmconnects();
+  const res = result.find();
+  return res;
+}
+
+export async function mydb(){
+  const client = new MongoClient();
+  // mongodb+srv://vlmuser:<password>@vlmportfolio.8sadjb3.mongodb.net/?retryWrites=true&w=majority
+  // mongodb+srv://vlmusers:EybgxcPJFgGGLByL@vlmportfolio.8sadjb3.mongodb.net/portfolio?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1
+    const like = `mongodb+srv://vlmuser:EybgxcPJFgGGLByL@vlmportfolio.8sadjb3.mongodb.net/portfolio?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+
+    await client.connect(like)
+  return client.database("portfolio").collection<users>("vlmemails");
+}
+
+interface users{
+  _id:{$oid:string};
+  user:string;
+  email:string;
+}
+export async function checkvlmemails(user:string) {
+  const result = await mydb() 
+  const res = await result.findOne({ user: user });
+  return res;
+  }
 export function vlmtoken(payload:any):Promise<string>{
   // const { VLM_JWT_SECRET } = Deno.env.toObject();
   // const key = Deno.env.get("VLM_JWT_SECRET") as string;
@@ -100,7 +144,14 @@ export async function vlmupdateGist(gist:string,vlm_verify:string): Promise<any>
   const update:any = { $set:  vlm_verify} ;
   return (await collection.updateOne(filter, update));
 }
-
+// vlmadmin schema
+interface vlmprducts {
+  _id: {$oid:string};
+  vlmid:string;
+  title:string;
+  price:string;
+  image:string;
+}
 
 // Defining schema interface
 interface vlmUserSchema {
@@ -110,5 +161,4 @@ interface vlmUserSchema {
   password:string;
   vlm_verify:string;
   created_at:string;
-
 }

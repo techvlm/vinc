@@ -1,25 +1,27 @@
 import {
-    vlmcheck,
-    vlmcss,
-    vlmcssboot,
-    vlmdelete,
-    vlmhome,
-    vlmimg,
-    vlmjs,
-    vlmjsboot,
-    vlmlist,
-    vlmlistid,
-    vlmlogin,
-    vlmpatch,
-    vlmpostsignin,
-    vlmpostsignup,
-    vlmregister,
-    vlmtake,
-    vlmtake1,
+  vlmadmin,
+  vlmadminpost,
+  vlmcheck,
+  vlmcss,
+  vlmcssboot,
+  vlmdelete,
+  vlmhome,
+  vlmimg,
+  vlmjs,
+  vlmjsboot,
+  vlmlist,
+  vlmlistid,
+  vlmlogin,
+  vlmpatch,
+  vlmpostsignin,
+  vlmpostsignup,
+  vlmregister,
+  vlmtake,
+  vlmtake1,
 } from './api.ts';
 import { Router } from './deps.ts';
 import { vlmauthmiddleware, vlmvalidate } from './validate.ts';
-import { vlmauth } from './vlmuser.ts';
+import { auth, vlmauth } from './vlmuser.ts';
 
 // deno-lint-ignore-file
 // deno-lint-ignore-file require-await
@@ -36,14 +38,15 @@ vlmrouter
 .use("/dashboard",vlmauth)
 .get("/signup",vlmregister)
 .get("/signin",vlmlogin)
-.get('/list', vlmlist)
-.get('/list/:id', vlmlistid)
-.patch('/list/:id', vlmpatch)
-.delete('/list/:id', vlmdelete)
+.get('/list',auth, vlmlist)
+.get('/list/:id',auth, vlmlistid)
+.patch('/list/:id', auth,vlmpatch)
+.delete('/list/:id',auth, vlmdelete)
 .post('/signup',vlmpostsignup)
 .post('/signin',vlmpostsignin)
 .get("/js/:file",vlmjs)
-
+.get('/vlmadmin',vlmadmin)
+.post("/vlmadmin",vlmadminpost)
 .get('/css/:file',vlmcss)
 .get("/js/boot/:file", vlmjsboot)
 .get('/css/boot/:file',vlmcssboot)

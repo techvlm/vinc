@@ -1,7 +1,9 @@
 // deno-lint-ignore-file
 import { Context, red, verify } from './deps.ts';
+import { vlmuserid } from './mongo.ts';
 import { vlmpatchGist } from './User.ts';
 
+// deno-lint-ignore-file
 // deno-lint-ignore-file
 // deno-lint-ignore-file
 export class vlmUsercheck {
@@ -60,13 +62,40 @@ export const vlmvalidate = async (ctx: Context, next:Function) => {
     if (!myParamValue) {
         throw new Error("there is no param id")
     }
-    if(myParamValue){
-      await verify(myParamValue,vlmkey);
+   const yi= await ctx.cookies.get("vlmid")
+    if (!yi) {
+      const parts = queryString.split("=");
+      const lastPart = parts[parts.length - 1];
+      const sop:any=await vlmuserid(lastPart)
+      await ctx.cookies.set('vlmid',sop?._id);
     }
-    const check:any =await ctx.cookies.get("vlmid")
+// const parts = queryString.split("=");
+// const lastPart = parts[parts.length - 1];
+// const lastPart1 = parts[parts.length - 2];
+    if (yi) {
+      if(myParamValue){
+        const parts = queryString.split("=");
+        const lastPart1 = parts[parts.length - 2];
+        await verify(lastPart1,vlmkey);
+      }
+
+    }
+    const check:any = await ctx.cookies.get("vlmid")
     const gop:any={vlm_verify:"true"}
     const rop= await vlmpatchGist(check,gop);
     console.log(rop)
+// const parts = queryString.split("=");
+// const lastPart = parts[parts.length - 1];
+// const sop:any=await vlmuserid(lastPart)
+// await ctx.cookies.set('vlmid',sop?._id);
+
+// lastPart.concat("/")
+// console.log(lastPart,lastPart1)
+
+// console.log(lastPart);
+
+
+
     await next();
 } catch (error) {
     console.log(red("VLM :) " + error))
@@ -84,4 +113,22 @@ export const jsonMiddleware = async (ctx: Context, next: Function) => {
     await next();
   }
 };
+export async function generateNewName(name: string): Promise<string> {
+  // Split the name into an array of words
+  const words = name.split(" ");
 
+  // Get the last name from the array
+  const lastName = words[words.length - 1];
+
+  // Generate a new name by concatenating the last name with a random number
+  const randomNumber = Math.floor(Math.random() * 1000) + 1;
+  const newLastName = `${lastName}-${randomNumber}`;
+
+  // Replace the last name in the array with the new last name
+  words[words.length - 1] = newLastName;
+
+  // Join the array back into a string
+  const newName = words.join(" ");
+
+  return newName;
+}

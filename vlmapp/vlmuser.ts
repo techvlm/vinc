@@ -1,7 +1,8 @@
-import { Context, Cookies, red, RouterContext, SmtpClient, verify } from './deps.ts';
-import { vlmpayload_email, vlmtoken } from './mongo.ts';
+import { Context, Cookies, red, verify } from './deps.ts';
+import { vlmgetToken } from './jwt.ts';
 import { vlmkey } from './validate.ts';
 
+// import { insertjson } from './mongo.ts';
 // deno-lint-ignore-file
 type vlmjobtype={
     name:string;
@@ -74,32 +75,42 @@ const validateAuthCookie = async (ctx:Context,authCookie: string): Promise<boole
     return true;
   };
   
-  export async function vlmsend(ctx:RouterContext<string>,email:string,user:string){
-    const client = new SmtpClient(); 
-    const env =Deno.env.toObject();
-    const top =await vlmtoken(vlmpayload_email(email))
-    if (top !=null) {
-        ctx.response.status =201;
-        const url = `https://vince.deno.dev/valid?vlm=${top}`
-    
-        await client.connectTLS({
-            hostname: "smtp.gmail.com",
-            port: 587,
-            username: env.SEND_EMAIL,
-            password: env.PWD,
-          });
-          await client.send({
-            from: env.SEND_EMAIL,
-            to: email,
-            subject: `Welcome ${user} Please confirm your email address`,
-            content: `
-            Hi from vincent, your link will expire after 1 minute
-            <br/>
-            <span>here is your link ... </span><a href=${url}>${url}</a>
-
-            `
-          });
-
-
+  export async function auth(ctx:Context,next:Function) {
+    try {
+      const jwt=await vlmgetToken(ctx.request.headers);
+      if (!jwt) {
+        ctx.response.redirect("/Signin")
+        ctx.throw(401,"there is no jwt")
+      }
+      const payload=await verify(jwt,vlmkey)
+      if (!payload) {
+        ctx.response.redirect("/Signin")
+        ctx.throw(401,"there is no payaload")
+      }
+      await next();
+    } catch (error) {
+      console.log(red("vlm :( " + error))
     }
   }
+
+export async function vlmproducts(){
+
+  // const rop= await vlmlocal()
+        
+  // rop.forEach(async (item)=>{
+  //     const gop= await vlmlocals(item._id)
+  //     console.log(gop?.image)
+  // })
+  try {
+    const jsonFile = await Deno.readFile(`${Deno.cwd()}/vlmapp/static/json/products.json`);
+    const jsonData = new TextDecoder().decode(jsonFile);
+    if (jsonData) {
+      console.log(jsonData)
+    }
+  } catch (error) {
+    console.log(red("VLM :) "+error))
+  }
+  // const fors =await insertjson(jsonData)
+  // return fors;
+  // ctx.response.body = jsonData;
+}
