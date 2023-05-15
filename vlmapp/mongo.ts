@@ -10,19 +10,19 @@ export async function vlmconnect():Promise<Collection<vlmUserSchema>>{
 // const like=`mongodb+srv://vlmdatabase:GWveXb2tj4xTc3Pr@cluster0.ccv0d.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`
   // const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 // await client.connect("mongodb://localhost:27017/deno_portfolio")
-// await client.connect("mongodb://127.0.0.1:27017/deno_portfolio");
+await client.connect("mongodb://127.0.0.1:27017/deno_portfolio");
 // await client.connect(like);
 
-await client.connect("mongodb://localhost:27017/vlmuserdb");
-  return client.database("vlmuserdb").collection<vlmUserSchema>("vlmusers");
+// await client.connect("mongodb://localhost:27017/vlmuserdb");
+  return client.database("deno_portfolio").collection<vlmUserSchema>("vlmusers");
 }
 export async function vlmconnects():Promise<Collection<vlmprducts>>{
   const client = new MongoClient();
 // const like=`mongodb+srv://vlmdatabase:vlmlucy3256#@cluster0.ccv0d.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`
-  const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+  // const like = `mongodb+srv://vlmusers:BX7meDCl2WSUtYoL@vlm.7ymg1vs.mongodb.net/vlmdbuser?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 // await client.connect("mongodb://localhost:27017/deno_portfolio")
-// await client.connect("mongodb://localhost:27017/deno_portfolio");
-await client.connect(like);
+await client.connect("mongodb://localhost:27017/deno_portfolio");
+// await client.connect(like);
 return client.database("deno_portfolio").collection<vlmprducts>("vlmproducts");
 }
 
@@ -41,10 +41,12 @@ export async function mydb(){
   const client = new MongoClient();
   // mongodb+srv://vlmuser:<password>@vlmportfolio.8sadjb3.mongodb.net/?retryWrites=true&w=majority
   // mongodb+srv://vlmusers:EybgxcPJFgGGLByL@vlmportfolio.8sadjb3.mongodb.net/portfolio?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1
-    const like = `mongodb+srv://vlmuser:EybgxcPJFgGGLByL@vlmportfolio.8sadjb3.mongodb.net/portfolio?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
+    // const like = `mongodb+srv://vlmuser:EybgxcPJFgGGLByL@vlmportfolio.8sadjb3.mongodb.net/portfolio?retryWrites=true&w=majority&authMechanism=SCRAM-SHA-1`;
 
-    await client.connect(like)
-  return client.database("portfolio").collection<users>("vlmemails");
+    // await client.connect(like)
+await client.connect("mongodb://localhost:27017/deno_portfolio");
+
+  return client.database("deno_portfolio").collection<users>("vlmemails");
 }
 
 interface users{

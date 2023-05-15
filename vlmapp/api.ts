@@ -1,4 +1,3 @@
-// deno-lint-ignore-file
 import {
     bold,
     brightBlue,
@@ -13,6 +12,7 @@ import {
     SmtpClient,
 } from './deps.ts';
 import {
+    checkvlmemails,
     vlmexistemail,
     vlmexistuser,
     vlmpayload,
@@ -24,6 +24,7 @@ import {
 import { vlmcreategist, vlmgetgist, vlmgetgistid, vlmpatchGist, vlmremoveGist } from './User.ts';
 import { vlmval } from './validate.ts';
 
+// deno-lint-ignore-file
 // deno-lint-ignore-file
 // deno-lint-ignore-file
 // deno-lint-ignore-file
@@ -206,38 +207,38 @@ if(pass !=null){
             const top =await vlmtoken(vlmpayload_email(email))
 
             if (top !=null) {
-                const url = `http://127.0.0.1:6060/valid?vlm=${top}=${userhope.user}`
+                // const url = `http://127.0.0.1:6060/valid?vlm=${top}=${userhope.user}`
                 try {
-                    const fo=Deno.env.toObject()
-                    await client.connectTLS({
-                      hostname: "smtp.gmail.com",
-                      port: 465,
-                      username:fo.vlm_mail,
-                      password:fo.vlm_password,
-                    });
+                //     const fo=Deno.env.toObject()
+                //     await client.connectTLS({
+                //       hostname: "smtp.gmail.com",
+                //       port: 465,
+                //       username:fo.vlm_mail.toString(),
+                //       password:fo.vlm_password.toString(),
+                //     });
                     
-                    await client.send({
-                      from: fo.vlm_mail,
-                      to: fo.SEND_EMAIL,
-                      subject: ` Please confirm your email address`,// Email address of the destination
-                      content:"thnaks for registering to my website i will surely not disappoint",
-                      html:`
-                      <!DOCTYPE html>
-                      <html lang="en">
-                      <head>
-                          <meta charset="UTF-8">
-                          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                      </head>
-                      <body>
-                      <div id="you">
-                      Welcome ${userhope.user}
-                      </div>
-                      <a href="${url}" class="me">Verify me</a>
-                      </body>
-                      </html>
-                      `
-                    });
+                //     await client.send({
+                //       from: fo.vlm_mail.toString(),
+                //       to: fo.SEND_EMAIL.toString(),
+                //       subject: ` Please confirm your email address`,// Email address of the destination
+                //       content:"thnaks for registering to my website i will surely not disappoint",
+                //       html:`
+                //       <!DOCTYPE html>
+                //       <html lang="en">
+                //       <head>
+                //           <meta charset="UTF-8">
+                //           <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                //           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                //       </head>
+                //       <body>
+                //       <div id="you">
+                //       Welcome ${userhope.user}
+                //       </div>
+                //       <a href="${url}" class="me">Verify me</a>
+                //       </body>
+                //       </html>
+                //       `
+                //     });
                     
                     await vlmcreategist(userhope.user,userhope.email,userhope.pass,"false")
                     const userd:any= await vlmuserid(userhope.user)
@@ -302,43 +303,43 @@ if(pass !=null){
                 access_token:await vlmtoken(vlmpayload(yop.user))
             }
 
-            // if(yet.vlmmail==Deno.env.toObject().SEND_EMAIL){
-            //     console.log("you are vlm ")
-            //     ctx.response.status=200;
-            //     ctx.response.body=res.access_token0
+            if(yet.vlmmail==Deno.env.toObject().SEND_EMAIL){
+                console.log("you are vlm ")
+                ctx.response.status=200;
+                ctx.response.body=res.access_token0
 
 
-            // }else{
-            //     ctx.cookies.set("vlmid",yet.vlmid)
-            //     const client =res.access_token 
-            //     ctx.cookies.set("client",client,{httpOnly:true});
-            //     ctx.response.redirect("/dashboard")
-            //         // console.log("for client auth")
-            // }
+            }else{
+                ctx.cookies.set("vlmid",yet.vlmid)
+                const client =res.access_token 
+                ctx.cookies.set("client",client,{httpOnly:true});
+                ctx.response.redirect("/dashboard")
+                    // console.log("for client auth")
+            }
 
               
-                // ctx.response.status=200;
-                // ctx.response.body=res.access_token0
-                // const check= await checkvlmemails(yop.user)
-                // // console.log("you are vlm")
-                // if (check?.user=="vlm") {
-                //     // if (check?.email==yet.vlmemail) {
-                //     // }
-                //     console.log(check?.email)
-                // }
+                ctx.response.status=200;
+                ctx.response.body=res.access_token0
+                const check= await checkvlmemails(yop.user)
+                // console.log("you are vlm")
+                if (check?.user=="vlm") {
+                    // if (check?.email==yet.vlmemail) {
+                    // }
+                    console.log(check?.email)
+                }
                 
 
 
-            // if (yop.user !="vlm"){
-                // if (check?.user!=yop.user) {
+            if (yop.user !="vlm"){
+                if (check?.user!=yop.user) {
                     ctx.cookies.set("vlmid",yet.vlmid)
                     const client =res.access_token 
                     ctx.cookies.set("client",client,{httpOnly:true});
                     console.log("client")
                     ctx.response.redirect("/dashboard")
-                // }
+                }
                     // console.log("for client auth")
-            // }
+            }
         }
 
 
